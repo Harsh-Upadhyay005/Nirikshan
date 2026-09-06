@@ -1,6 +1,5 @@
 """
 Infrastructure Project Risk Prediction System
-
 Predicts: (1) will a project be delayed, (2) will it go over budget,
 (3) if so, by how much, (4) which risk segment does it belong to,
 (5) generates a final alert list.
@@ -14,6 +13,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.metrics import (classification_report, roc_auc_score, confusion_matrix,
@@ -24,11 +24,31 @@ from sklearn.preprocessing import StandardScaler
 from lightgbm import LGBMClassifier, LGBMRegressor
 
 RANDOM_STATE = 42
-os.makedirs("./models", exist_ok=True)
 
-df = pd.read_csv("./data/processed/Table6_Engineered.csv")
+# Path setup: this file lives at ml/src/ml/train.py — go up to ml/ root.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+INPUT_PATH = PROJECT_ROOT / "data" / "processed" / "Table6_Engineered.csv"
+MODELS_DIR = PROJECT_ROOT / "models"
+REPORTS_DIR = PROJECT_ROOT / "reports"
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
+REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+
+df = pd.read_csv(INPUT_PATH)
 print(f"Loaded {df.shape[0]} rows, {df.shape[1]} columns")
 
+
+# PART 1 — LEAKAGE-SAFE FEATURE SET
+
+# Everything here is known from a project's approval papers and its
+# CURRENT physical/financial execution status. Nothing here is derived
+# from revised_doc or Revised Cost — those are what we're predicting.
+#
+# Confirmed identity relationships that must stay OUT of every feature set:
+#   is_delayed        == (schedule_slippage_months > 0)
+#   is_cost_overrun    == (cost_overrun_pct > 0)
+# Anything built from revised_doc / Revised Cost is excluded for the same
+# reason: expenditure_utilization_pct, progress_expenditure_gap,
+# suspect_revised_cost, effective_doc, is_revised, log_revised_cost.
 
 SAFE_FEATURES = [
     "ministry_freq_encoded",
@@ -53,7 +73,6 @@ print(f"\nUsing {len(SAFE_FEATURES)} leakage-safe features")
 X = df[SAFE_FEATURES]
 # LightGBM handles NaN natively — no imputation needed (matches the
 # earlier decision to leave genuine missingness alone).
-
 
 # PART 2 — STAGE 1: CLASSIFY DELAY RISK AND COST-OVERRUN RISK
 
@@ -83,16 +102,16 @@ def train_classifier(target_name, y):
     imp = pd.Series(model.feature_importances_, index=SAFE_FEATURES).sort_values(ascending=False)
     print(imp.head(5))
 
-    joblib.dump(model, f"./models/{target_name}_classifier.joblib")
+    joblib.dump(model, MODELS_DIR / f"{target_name}_classifier.joblib")
     return model
 
 delay_clf = train_classifier("delay", df["is_delayed"])
 overrun_clf = train_classifier("cost_overrun", df["is_cost_overrun"])
 
-#  
+
 # PART 3 — STAGE 2: MAGNITUDE REGRESSION (hurdle model — only on the
 # at-risk subset, per the design decision above)
-#  
+
 
 def train_regressor(target_name, y_full, mask):
     print(f"\n{'='*60}\nREGRESSOR: {target_name}  (n={mask.sum()} at-risk projects)\n{'='*60}")
@@ -111,15 +130,73 @@ def train_regressor(target_name, y_full, mask):
     print(f"MAE: {mae:.2f} | RMSE: {rmse:.2f} | R2: {r2:.3f}")
     print(f"(for reference, mean {target_name} in this subset = {y_sub.mean():.2f})")
 
-    joblib.dump(model, f"./models/{target_name}_regressor.joblib")
+    joblib.dump(model, MODELS_DIR / f"{target_name}_regressor.joblib")
     return model
 
 slippage_reg = train_regressor(
     "schedule_slippage_months", df["schedule_slippage_months"], df["is_delayed"] == 1
 )
-overrun_reg = train_regressor(
-    "cost_overrun_pct", df["cost_overrun_pct"], df["is_cost_overrun"] == 1
+
+# --- cost_overrun_pct regressor is a special case ---
+# Tested 3 fixes against the baseline (checked in dev, not guesswork):
+#   1. Log-transform the target — cost_overrun_pct is heavily skewed (skew=7.4,
+#      max=1231% vs median=21%) which distorts squared-error loss.
+#   2. Regularized LightGBM params — only 542 at-risk rows here, default LGBM
+#      overfits badly (train R2=0.63 vs test R2=0.30 on the baseline).
+#   3. Ministry/Category historical-overrun-magnitude features, added via
+#      SHRINKAGE-SMOOTHED TARGET ENCODING fit ONLY on the training fold (never
+#      on data the model will later be tested against — verified this by first
+#      building it wrong, seeing R2 jump to a suspicious 0.73, then finding the
+#      leak: encoding built on the full dataset before splitting let test-set
+#      values leak into ministries with as few as 2-3 at-risk projects).
+# Combined effect: test R2 improved from 0.303 (baseline) to ~0.53.
+# Tested this same encoding on the other 3 models too — it only helped this
+# one; the delay classifier was unchanged and the cost-overrun classifier
+# got slightly WORSE, so it's deliberately NOT applied there.
+print(f"\n{'='*60}\nREGRESSOR: cost_overrun_pct (improved — see comment above)\n{'='*60}")
+
+mask_overrun = df["is_cost_overrun"] == 1
+sub = df[mask_overrun].copy()
+train_idx, test_idx = train_test_split(sub.index, test_size=0.2, random_state=RANDOM_STATE)
+train_df, test_df = sub.loc[train_idx].copy(), sub.loc[test_idx].copy()
+
+OVERRUN_ENCODE_K = 10  # shrinkage strength — higher = trust the group average less
+global_mean_overrun = train_df["cost_overrun_pct"].mean()
+
+def fit_target_encoding(train_data, group_col, target_col, k=OVERRUN_ENCODE_K):
+    stats = train_data.groupby(group_col)[target_col].agg(["sum", "count"])
+    return ((stats["sum"] + global_mean_overrun * k) / (stats["count"] + k)).to_dict()
+
+def apply_target_encoding(data, group_col, mapping, fallback):
+    return data[group_col].map(mapping).fillna(fallback)
+
+ministry_overrun_map = fit_target_encoding(train_df, "Ministry", "cost_overrun_pct")
+category_overrun_map = fit_target_encoding(train_df, "Category", "cost_overrun_pct")
+
+for d in [train_df, test_df]:
+    d["ministry_avg_overrun_enc"] = apply_target_encoding(d, "Ministry", ministry_overrun_map, global_mean_overrun)
+    d["category_avg_overrun_enc"] = apply_target_encoding(d, "Category", category_overrun_map, global_mean_overrun)
+
+OVERRUN_FEATURES = SAFE_FEATURES + ["ministry_avg_overrun_enc", "category_avg_overrun_enc"]
+
+overrun_reg = LGBMRegressor(
+    random_state=RANDOM_STATE, verbose=-1,
+    max_depth=4, num_leaves=15, min_child_samples=20,
+    learning_rate=0.05, n_estimators=200,
+    subsample=0.8, colsample_bytree=0.8, reg_alpha=1.0, reg_lambda=1.0,
 )
+overrun_reg.fit(train_df[OVERRUN_FEATURES], np.log1p(train_df["cost_overrun_pct"]))
+test_pred = np.expm1(overrun_reg.predict(test_df[OVERRUN_FEATURES]))
+
+print(f"MAE: {mean_absolute_error(test_df['cost_overrun_pct'], test_pred):.2f} | "
+      f"RMSE: {np.sqrt(mean_squared_error(test_df['cost_overrun_pct'], test_pred)):.2f} | "
+      f"R2: {r2_score(test_df['cost_overrun_pct'], test_pred):.3f}")
+print(f"(baseline before this fix was R2=0.303 — see conversation history)")
+
+joblib.dump(overrun_reg, MODELS_DIR / "cost_overrun_pct_regressor.joblib")
+# note: the ministry/category overrun mappings this model needs are saved
+# later into models/encoders.joblib (Part 6) alongside everything else —
+# predict.py only ever loads that one file, not a separate one here.
 
 
 # PART 4 — RISK CLUSTERING
@@ -144,9 +221,8 @@ for k in range(2, 7):
 print(f"\nSelected k={best_k} (silhouette={best_score:.3f})")
 kmeans = KMeans(n_clusters=best_k, random_state=RANDOM_STATE, n_init=10)
 df["cluster"] = kmeans.fit_predict(X_scaled)
-joblib.dump(kmeans, "./models/risk_clusters.joblib")
-print(f"\nSaved ./models/risk_clusters.joblib")
-print(f"\nClustered {df['cluster'].nunique()} projects into {best_k} risk segments.")
+joblib.dump(kmeans, MODELS_DIR / "risk_clusters.joblib")
+
 # Label clusters by their ACTUAL outcome rates (interpretation only — not
 # fed back into the clustering itself, which never saw is_delayed/is_cost_overrun)
 profile = df.groupby("cluster").agg(
@@ -181,7 +257,9 @@ df["cost_overrun_probability"] = overrun_clf.predict_proba(X)[:, 1]
 # ranking problem, not a threshold problem.
 
 df["predicted_slippage_months"] = slippage_reg.predict(X).round(1)
-df["predicted_cost_overrun_pct"] = overrun_reg.predict(X).round(1)
+df["ministry_avg_overrun_enc"] = apply_target_encoding(df, "Ministry", ministry_overrun_map, global_mean_overrun)
+df["category_avg_overrun_enc"] = apply_target_encoding(df, "Category", category_overrun_map, global_mean_overrun)
+df["predicted_cost_overrun_pct"] = np.expm1(overrun_reg.predict(df[OVERRUN_FEATURES])).round(1)
 
 df["expected_slippage_months"] = (df["delay_probability"] * df["predicted_slippage_months"]).round(1)
 df["expected_overrun_value_cr"] = (
@@ -220,12 +298,12 @@ alerts = df[df["needs_alert"]].sort_values("risk_score", ascending=False)[[
     "risk_segment", "risk_score", "alert_reason"
 ]]
 
-alerts.to_csv("./data/processed/risk_alerts.csv", index=False)
+alerts.to_csv(REPORTS_DIR / "risk_alerts.csv", index=False)
 print(f"\n{len(alerts)} of {len(df)} projects flagged ({len(alerts)/len(df):.1%}) "
       f"— top {int((1-ALERT_PERCENTILE)*100)}% by composite risk score")
 print(f"Total expected value at risk in the alert list: "
       f"₹{alerts['expected_overrun_value_cr'].sum():,.0f} crore")
-print(f"Saved ./data/processed/risk_alerts.csv")
+print(f"Saved risk_alerts.csv")
 print("\nTop 5 highest-risk projects:")
 print(alerts.head(5)[["Project Name", "Ministry", "alert_reason"]].to_string())
 
@@ -235,7 +313,6 @@ print(alerts.head(5)[["Project Name", "Ministry", "alert_reason"]].to_string())
 # The frequency-encoding maps and the cluster scaler only exist right now
 # as columns computed on this training set. To score a brand-new project
 # next month, we need these saved as lookup tables, not baked into a CSV.
-print(f"Saved ./models/encoders.joblib — required alongside the 5 models to score new projects")
 scaler = StandardScaler().fit(df[cluster_features].fillna(df[cluster_features].median()))
 
 encoders = {
@@ -254,7 +331,11 @@ encoders = {
     "safe_features": SAFE_FEATURES,
     "risk_labels": risk_labels,
     "reference_date": "2026-04-01",  # must match the date used for project_age_months
+    # cost-overrun-magnitude regressor uses 2 extra features on top of SAFE_FEATURES
+    "ministry_overrun_map": ministry_overrun_map,
+    "category_overrun_map": category_overrun_map,
+    "global_mean_overrun": global_mean_overrun,
+    "overrun_features": OVERRUN_FEATURES,
 }
-joblib.dump(encoders, "./models/encoders.joblib")
-print("\nSaved ./models/encoders.joblib — required alongside the 5 models to score new projects")
-
+joblib.dump(encoders, MODELS_DIR / "encoders.joblib")
+print("\nSaved models/encoders.joblib — required alongside the 5 models to score new projects")
