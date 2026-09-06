@@ -28,15 +28,18 @@ Usage:
 import joblib
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
-MODELS_DIR = "models"
+# Path setup: this file lives at ml/src/ml/predict.py — go up to ml/ root.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+MODELS_DIR = PROJECT_ROOT / "models"
 
-_delay_clf = joblib.load(f"{MODELS_DIR}/delay_classifier.joblib")
-_overrun_clf = joblib.load(f"{MODELS_DIR}/cost_overrun_classifier.joblib")
-_slippage_reg = joblib.load(f"{MODELS_DIR}/schedule_slippage_months_regressor.joblib")
-_overrun_reg = joblib.load(f"{MODELS_DIR}/cost_overrun_pct_regressor.joblib")
-_kmeans = joblib.load(f"{MODELS_DIR}/risk_clusters.joblib")
-_enc = joblib.load(f"{MODELS_DIR}/encoders.joblib")
+_delay_clf = joblib.load(MODELS_DIR / "delay_classifier.joblib")
+_overrun_clf = joblib.load(MODELS_DIR / "cost_overrun_classifier.joblib")
+_slippage_reg = joblib.load(MODELS_DIR / "schedule_slippage_months_regressor.joblib")
+_overrun_reg = joblib.load(MODELS_DIR / "cost_overrun_pct_regressor.joblib")
+_kmeans = joblib.load(MODELS_DIR / "risk_clusters.joblib")
+_enc = joblib.load(MODELS_DIR / "encoders.joblib")
 
 REFERENCE_DATE = pd.Timestamp(_enc["reference_date"])
 
@@ -94,7 +97,18 @@ def predict_risk(raw: dict) -> dict:
     delay_p = float(_delay_clf.predict_proba(X)[:, 1][0])
     overrun_p = float(_overrun_clf.predict_proba(X)[:, 1][0])
     slippage = float(_slippage_reg.predict(X)[0])
-    overrun_pct = float(_overrun_reg.predict(X)[0])
+
+    # cost_overrun_pct regressor needs 2 extra features (ministry/category
+    # historical overrun magnitude) on top of the standard 16 — this is the
+    # one model where those features actually helped (verified: R2 0.30 -> 0.53).
+    # Unseen ministry/category falls back to the training-set global mean.
+    ministry_overrun_enc = _enc["ministry_overrun_map"].get(raw["ministry"], _enc["global_mean_overrun"])
+    category_overrun_enc = _enc["category_overrun_map"].get(raw["category"], _enc["global_mean_overrun"])
+    X_overrun = X.copy()
+    X_overrun["ministry_avg_overrun_enc"] = ministry_overrun_enc
+    X_overrun["category_avg_overrun_enc"] = category_overrun_enc
+    X_overrun = X_overrun[_enc["overrun_features"]]
+    overrun_pct = float(np.expm1(_overrun_reg.predict(X_overrun)[0]))
 
     expected_slippage = round(delay_p * slippage, 1)
     expected_overrun_value = round(overrun_p * (overrun_pct / 100) * raw["original_cost_cr"], 1)
