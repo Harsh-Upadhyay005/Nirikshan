@@ -1,15 +1,16 @@
-FROM node:20-alpine
+FROM python:3.13-slim
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN npm install
+COPY pyproject.toml ./
+COPY src ./src
 
-COPY . .
+RUN pip install --no-cache-dir -e .
 
-RUN npx prisma generate
+EXPOSE 8000
 
-EXPOSE 3001
-
-CMD ["npm", "start"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
