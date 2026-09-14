@@ -182,7 +182,7 @@ class HealthCheck(BaseModel):
 
 class UserCreate(BaseModel):
     email: str
-    password: str
+    password: str | None = None  # Optional for OAuth users
     role: str  # admin, ministry_officer, auditor
     ministry_name: str | None = None
 
@@ -208,6 +208,9 @@ class UserResponse(BaseModel):
     email: str
     role: str
     ministry_name: str | None = None
+    oauth_provider: str | None = None
+    full_name: str | None = None
+    profile_picture: str | None = None
     created_at: datetime
     
     model_config = ConfigDict(from_attributes=True)

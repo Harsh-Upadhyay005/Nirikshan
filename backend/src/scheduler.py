@@ -6,6 +6,7 @@ import logging
 
 from .database import SessionLocal
 from . import models, crud
+from .email_service import email_service
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +81,21 @@ def check_and_notify_alerts():
                     )
                     db.add(notification)
                     logger.info(f"[Scheduler] New alert notification for user {user.email}, project {project_code}")
+                    
+                    # Send email notification
+                    try:
+                        email_service.send_alert_notification(
+                            to_email=user.email,
+                            to_name=user.full_name or user.email.split("@")[0],
+                            project_name=alert.project.project_name,
+                            project_code=project_code,
+                            risk_segment=alert.risk_segment,
+                            risk_score=float(alert.risk_score),
+                            delay_probability=float(alert.delay_probability or 0),
+                            cost_overrun_probability=float(alert.cost_overrun_probability or 0)
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to send email to {user.email}: {e}")
                     
                 elif current_risk > previous_risk * 1.1:  # 10% increase threshold
                     # Risk increased significantly
