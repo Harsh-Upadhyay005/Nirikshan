@@ -148,9 +148,16 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     email = Column(Text, unique=True, nullable=False, index=True)
-    password_hash = Column(Text, nullable=False)
+    password_hash = Column(Text)  # Nullable for OAuth users
     role = Column(Text, nullable=False)  # admin, ministry_officer, auditor
     ministry_name = Column(Text)
+    
+    # OAuth fields
+    oauth_provider = Column(Text)  # 'google', None for regular users
+    oauth_id = Column(Text)  # Google user ID
+    full_name = Column(Text)
+    profile_picture = Column(Text)
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     subscriptions = relationship("Subscription", back_populates="user", cascade="all, delete-orphan")
