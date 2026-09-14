@@ -1,23 +1,53 @@
-from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks
+from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pathlib import Path
 from datetime import datetime
 import sys
+import logging
+from logging.handlers import RotatingFileHandler
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from . import models, schemas, crud, auth
 from .database import engine, get_db
 from .config import settings
 from .ml_service import predict_risk
 from .scheduler import start_scheduler
+from .oauth import google_oauth
+from .email_service import email_service
 
 models.Base.metadata.create_all(bind=engine)
+
+# Configure logging
+if settings.env == "production":
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            RotatingFileHandler('backend.log', maxBytes=10485760, backupCount=5),
+            logging.StreamHandler()
+        ]
+    )
+else:
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    )
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Nirikshan API",
     description="Unified Python backend for Nirikshan infrastructure risk monitoring platform",
     version="1.0.0",
 )
+
+# Rate limiting
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,10 +58,57 @@ app.add_middleware(
 )
 
 
-# Startup event to start background scheduler
+# Request logging middleware
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info(f"{request.method} {request.url.path} - Client: {request.client.host if request.client else 'unknown'}")
+    try:
+        response = await call_next(request)
+        logger.info(f"Response status: {response.status_code}")
+        return response
+    except Exception as e:
+        logger.error(f"Request failed: {str(e)}", exc_info=True)
+        raise
+
+
+# Startup event to validate config and start background scheduler
 @app.on_event("startup")
 async def startup_event():
+    logger.info("Starting Nirikshan backend...")
+    
+    # Validate configuration
+    try:
+        settings.validate_production_config()
+        logger.info("Configuration validation passed")
+    except ValueError as e:
+        logger.error(f"Configuration validation failed: {e}")
+        raise
+    
+    # Test database connection
+    try:
+        with engine.connect() as conn:
+            conn.execute("SELECT 1")
+        logger.info("Database connection successful")
+    except Exception as e:
+        logger.error(f"Cannot connect to database: {e}")
+        raise RuntimeError(f"Database connection failed: {e}")
+    
+    # Test ML models
+    try:
+        from .ml_service import predict_risk
+        logger.info("ML models loaded successfully")
+    except Exception as e:
+        logger.error(f"Failed to load ML models: {e}")
+        raise RuntimeError(f"ML models unavailable: {e}")
+    
+    # Start scheduler
     start_scheduler()
+    logger.info("Background scheduler started")
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("Shutting down gracefully...")
 
 
 @app.get("/", tags=["Root"])
@@ -68,7 +145,8 @@ def health_check(db: Session = Depends(get_db)):
 # ======================
 
 @app.post("/auth/signup", response_model=schemas.UserWithToken, tags=["Authentication"])
-def signup(user_create: schemas.UserCreate, db: Session = Depends(get_db)):
+@limiter.limit("3/minute")
+def signup(request: Request, user_create: schemas.UserCreate, db: Session = Depends(get_db)):
     # Check if user already exists
     existing_user = db.query(models.User).filter(models.User.email == user_create.email).first()
     if existing_user:
@@ -77,6 +155,10 @@ def signup(user_create: schemas.UserCreate, db: Session = Depends(get_db)):
     # Validate ministry_officer has ministry_name
     if user_create.role == "ministry_officer" and not user_create.ministry_name:
         raise HTTPException(status_code=400, detail="Ministry name required for ministry_officer role")
+    
+    # Password required for non-OAuth signup
+    if not user_create.password:
+        raise HTTPException(status_code=400, detail="Password is required")
     
     # Create user
     hashed_password = auth.get_password_hash(user_create.password)
@@ -90,6 +172,16 @@ def signup(user_create: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     
+    # Send welcome email
+    try:
+        email_service.send_welcome_email(
+            to_email=db_user.email,
+            to_name=db_user.email.split("@")[0],
+            role=db_user.role
+        )
+    except Exception as e:
+        logger.warning(f"Failed to send welcome email: {e}")
+    
     # Create token
     access_token = auth.create_access_token(
         data={"sub": db_user.email, "user_id": db_user.id, "role": db_user.role}
@@ -102,7 +194,8 @@ def signup(user_create: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/auth/login", response_model=schemas.UserWithToken, tags=["Authentication"])
-def login(user_login: schemas.UserLogin, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, user_login: schemas.UserLogin, db: Session = Depends(get_db)):
     user = auth.authenticate_user(db, user_login.email, user_login.password)
     if not user:
         raise HTTPException(
@@ -123,6 +216,104 @@ def login(user_login: schemas.UserLogin, db: Session = Depends(get_db)):
 @app.get("/auth/me", response_model=schemas.UserResponse, tags=["Authentication"])
 def get_me(current_user: models.User = Depends(auth.get_current_user)):
     return current_user
+
+
+@app.get("/auth/google/url", tags=["Authentication"])
+def get_google_auth_url():
+    """Get Google OAuth authorization URL."""
+    if not google_oauth.is_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Google OAuth is not configured"
+        )
+    
+    return {
+        "authorization_url": google_oauth.get_authorization_url()
+    }
+
+
+@app.post("/auth/google/callback", response_model=schemas.UserWithToken, tags=["Authentication"])
+async def google_callback(code: str, db: Session = Depends(get_db)):
+    """
+    Handle Google OAuth callback.
+    Creates user if doesn't exist, or logs in existing user.
+    """
+    if not google_oauth.is_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Google OAuth is not configured"
+        )
+    
+    # Exchange code for token
+    token_response = await google_oauth.exchange_code_for_token(code)
+    access_token = token_response.get("access_token")
+    
+    if not access_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to get access token from Google"
+        )
+    
+    # Get user info from Google
+    user_info = await google_oauth.get_user_info(access_token)
+    google_email = user_info.get("email")
+    google_id = user_info.get("id")
+    google_name = user_info.get("name")
+    google_picture = user_info.get("picture")
+    
+    if not google_email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to get email from Google"
+        )
+    
+    # Check if user exists
+    existing_user = db.query(models.User).filter(models.User.email == google_email).first()
+    
+    if existing_user:
+        # Update OAuth info if it's a new OAuth login for existing user
+        if not existing_user.oauth_provider:
+            existing_user.oauth_provider = "google"
+            existing_user.oauth_id = google_id
+            existing_user.full_name = google_name
+            existing_user.profile_picture = google_picture
+            db.commit()
+            db.refresh(existing_user)
+        
+        user = existing_user
+    else:
+        # Create new user with auditor role (can be changed by admin)
+        user = models.User(
+            email=google_email,
+            oauth_provider="google",
+            oauth_id=google_id,
+            full_name=google_name,
+            profile_picture=google_picture,
+            role="auditor",  # Default role for OAuth users
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        
+        # Send welcome email
+        try:
+            email_service.send_welcome_email(
+                to_email=user.email,
+                to_name=user.full_name or user.email.split("@")[0],
+                role=user.role
+            )
+        except Exception as e:
+            logger.warning(f"Failed to send welcome email: {e}")
+    
+    # Create JWT token
+    jwt_token = auth.create_access_token(
+        data={"sub": user.email, "user_id": user.id, "role": user.role}
+    )
+    
+    return {
+        "user": user,
+        "token": jwt_token,
+    }
 
 
 # ======================
@@ -147,9 +338,10 @@ def predict_project_risk(
         result = predict_risk(project_data)
         return result
     except Exception as e:
+        logger.error(f"Prediction failed for user {current_user.id}: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Prediction failed: {str(e)}",
+            detail="Prediction service unavailable",
         )
 
 
