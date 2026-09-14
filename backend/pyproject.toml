@@ -23,13 +23,16 @@ dependencies = [
     "scikit-learn>=1.9.0",
     "lightgbm>=4.7.0",
     "apscheduler>=3.10.4",
-    "fastapi-mail>=1.4.1",
+    "slowapi>=0.1.9",
+    "httpx>=0.28.0",
+    "sib-api-v3-sdk>=7.6.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3.0",
     "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
     "httpx>=0.28.0",
 ]
 
