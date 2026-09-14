@@ -4,16 +4,16 @@ services:
     container_name: nirikshan_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: nirikshan
-      POSTGRES_USER: nirikshan_user
-      POSTGRES_PASSWORD: localdev123
+      POSTGRES_DB: ${POSTGRES_DB:-nirikshan}
+      POSTGRES_USER: ${POSTGRES_USER:-nirikshan_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - nirikshan_pgdata:/var/lib/postgresql/data
       - ./ml/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nirikshan_user -d nirikshan"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nirikshan_user} -d ${POSTGRES_DB:-nirikshan}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,12 +25,20 @@ services:
     container_name: nirikshan_backend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     environment:
-      DATABASE_URL: postgresql://nirikshan_user:localdev123@postgres:5432/nirikshan
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nirikshan_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-nirikshan}
       ML_MODELS_PATH: /app/ml/models
-      JWT_SECRET: dev-secret-change-in-production
-      FRONTEND_URL: http://localhost:3000
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      JWT_EXPIRY_DAYS: ${JWT_EXPIRY_DAYS:-7}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      FRONTEND_URL: ${FRONTEND_URL}
+      ENV: ${ENV:-development}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
     volumes:
       - ./ml/models:/app/ml/models:ro
     depends_on:
