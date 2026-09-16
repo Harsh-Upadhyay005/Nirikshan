@@ -4,7 +4,7 @@
 
 Nirikshan (निरीक्षण - meaning "Inspection" in Hindi) is a production-ready decision-support platform designed for **MoSPI IPMD / PAIMANA infrastructure monitoring**. It transforms historical infrastructure project data into predictive insights for identifying **cost overruns, schedule delays, execution risks, and projects requiring early intervention**.
 
-**🏆 Built for Smart India Hackathon 2024**
+**🏆 Built for Smart India Hackathon 2026**
 
 ---
 
@@ -561,7 +561,7 @@ Interactive API docs available at: `http://localhost:8000/docs`
 
 ---
 
-## 🎓 Smart India Hackathon 2024
+## 🎓 Smart India Hackathon 2026
 
 **Problem Statement:** AI-Powered Predictive Analytics and Early Warning System for Infrastructure Project Monitoring
 
@@ -657,7 +657,7 @@ This project is open-source and available under the MIT License.
 
 ## 👥 Team
 
-**Smart India Hackathate 2024 Team**
+**Smart India Hackathate 2026 Team**
 
 - Project Lead & Backend Developer
 - ML Engineer & Data Scientist
@@ -711,7 +711,7 @@ This project is open-source and available under the MIT License.
 
 ---
 
-**Built with ❤️ for Smart India Hackathon 2024**
+**Built with ❤️ for Smart India Hackathon 2026**
 
 **Status:** ✅ Production Ready | 🔐 Secure | 🧪 Tested | 📚 Documented
 
