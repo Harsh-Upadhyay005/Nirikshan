@@ -98,14 +98,14 @@ export const STATE_DISTRIBUTIONS: StateDistribution[] = [
 ]
 
 export const SECTOR_BREAKDOWN = [
-  { name: 'Transport & Logistics', count: 412, percent: 20.8, color: '#f59e0b' },
-  { name: 'Energy', count: 298, percent: 15.0, color: '#10b981' },
-  { name: 'Water & Sanitation', count: 214, percent: 10.8, color: '#059669' },
-  { name: 'Communication', count: 186, percent: 9.4, color: '#ea580c' },
-  { name: 'Social Infrastructure', count: 172, percent: 8.7, color: '#f97316' },
-  { name: 'Coal, Steel & Mining', count: 164, percent: 8.3, color: '#dc2626' },
-  { name: 'Urban Development', count: 143, percent: 7.2, color: '#9333ea' },
-  { name: 'Others', count: 392, percent: 19.8, color: '#64748b' }
+  { name: 'Transport & Logistics', count: 412, percent: 20.8, color: '#1d4ed8', icon: 'truck' },
+  { name: 'Energy', count: 298, percent: 15.0, color: '#0ea5e9', icon: 'zap' },
+  { name: 'Water & Sanitation', count: 214, percent: 10.8, color: '#06b6d4', icon: 'droplets' },
+  { name: 'Communication', count: 186, percent: 9.4, color: '#eab308', icon: 'radio' },
+  { name: 'Social Infrastructure', count: 172, percent: 8.7, color: '#f97316', icon: 'heart' },
+  { name: 'Coal, Steel & Mining', count: 164, percent: 8.3, color: '#fb7185', icon: 'factory' },
+  { name: 'Urban Development', count: 143, percent: 7.2, color: '#8b5cf6', icon: 'building' },
+  { name: 'Others', count: 392, percent: 19.8, color: '#64748b', icon: 'layers' }
 ]
 
 export const OVERRUN_TRENDS = [
