@@ -1,0 +1,808 @@
+/* ==========================================================================
+   NIRIKSHAN - WARM CREAM & EDITORIAL MINIMALIST LANDING STYLESHEET
+   Aesthetic: Warm Cream, Linen, Antique Ivory, Deep Obsidian Ink (#1c1917),
+   Warm Saffron & Terracotta Accents (#c2410c / #d97706). NO BLUE GRADIENTS.
+   ========================================================================== */
+
+.warm-landing {
+  min-height: 100vh;
+  background-color: #faf8f5;
+  color: #1c1917;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base Container */
+.warm-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* ==========================================================================
+   TOP SOVEREIGN BAR (DEEP OBSIDIAN & WARM GOLD)
+   ========================================================================== */
+.warm-top-bar {
+  background: #1c1917;
+  color: #a8a29e;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.warm-top-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.warm-top-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.warm-flag-strip {
+  display: inline-flex;
+  width: 22px;
+  height: 3px;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.warm-flag-strip .saffron { flex: 1; background: #ff9933; }
+.warm-flag-strip .white { flex: 1; background: #ffffff; }
+.warm-flag-strip .green { flex: 1; background: #138808; }
+
+.warm-top-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #d6d3d1;
+}
+
+.warm-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
+  animation: warmPulse 2s infinite;
+}
+
+@keyframes warmPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(22, 163, 74, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+/* ==========================================================================
+   WARM CREAM NAVIGATION BAR
+   ========================================================================== */
+.warm-navbar {
+  position: sticky;
+  top: 0;
+  background: rgba(250, 248, 245, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e7e2d7;
+  z-index: 50;
+  transition: all 0.2s ease;
+}
+
+.warm-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+.warm-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #1c1917;
+}
+
+.warm-brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #1c1917;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.15);
+}
+
+.warm-brand-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.warm-brand-main {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1c1917;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.warm-brand-devanagari {
+  font-size: 13px;
+  font-weight: 600;
+  color: #78716c;
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+.warm-brand-sub {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a8a29e;
+}
+
+.warm-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.warm-nav-links button,
+.warm-nav-links a {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #57534e;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: color 0.15s ease;
+}
+
+.warm-nav-links button:hover,
+.warm-nav-links a:hover {
+  color: #c2410c;
+}
+
+.warm-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-warm-secondary {
+  font-size: 13px;
+  font-weight: 600;
+  color: #44403c;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #d6d0c4;
+  background: #ffffff;
+  transition: all 0.15s ease;
+}
+
+.btn-warm-secondary:hover {
+  background: #f5f2eb;
+  border-color: #a8a29e;
+}
+
+.btn-warm-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #1c1917;
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(28, 25, 23, 0.2);
+  transition: all 0.18s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-warm-primary:hover {
+  background: #292524;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.3);
+}
+
+/* ==========================================================================
+   HERO SECTION: WARM CREAM & EDITORIAL
+   ========================================================================== */
+.warm-hero-section {
+  padding: 68px 0 84px;
+  background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.07) 0%, transparent 65%);
+}
+
+.warm-hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1.15fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .warm-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.warm-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.warm-hero-headline {
+  font-size: 50px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #1c1917;
+  margin: 0 0 20px;
+}
+
+.warm-hero-headline em {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #c2410c;
+}
+
+.warm-hero-sub {
+  font-size: 16px;
+  line-height: 1.62;
+  color: #57534e;
+  margin: 0 0 32px;
+  max-width: 520px;
+}
+
+.warm-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-hero-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 26px;
+  border-radius: 10px;
+  background: #1c1917;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.25);
+  transition: all 0.18s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-hero-solid:hover {
+  background: #292524;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(28, 25, 23, 0.35);
+}
+
+.btn-hero-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1c1917;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #d6d0c4;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.btn-hero-outline:hover {
+  background: #f5f2eb;
+  border-color: #a8a29e;
+}
+
+/* Warm Hero Visual Showcase Card */
+.warm-visual-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e7e2d7;
+  box-shadow: 0 20px 45px rgba(68, 64, 60, 0.07);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.warm-card-chrome {
+  padding: 14px 20px;
+  background: #faf8f5;
+  border-bottom: 1px solid #e7e2d7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.warm-chrome-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.warm-chrome-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d6d0c4;
+}
+
+.warm-chrome-dots span.dot-a { background: #fca5a5; }
+.warm-chrome-dots span.dot-b { background: #fde68a; }
+.warm-chrome-dots span.dot-c { background: #86efac; }
+
+.warm-card-caption {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #44403c;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.warm-card-content {
+  padding: 16px 20px 20px;
+  background: #ffffff;
+}
+
+/* Stats Ribbon below Hero */
+.warm-stats-strip {
+  margin-top: 56px;
+  padding: 24px 32px;
+  background: #ffffff;
+  border: 1px solid #e7e2d7;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(68, 64, 60, 0.03);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .warm-stats-strip {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+  }
+}
+
+.warm-stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.warm-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1c1917;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.warm-stat-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: #78716c;
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   MINIMALIST PILLARS (WARM CREAM PALETTE)
+   ========================================================================== */
+.warm-section {
+  padding: 92px 0;
+  border-top: 1px solid #f0ece3;
+}
+
+.warm-section.alt-bg {
+  background-color: #f5f2eb;
+}
+
+.warm-section-intro {
+  text-align: center;
+  max-width: 660px;
+  margin: 0 auto 54px;
+}
+
+.warm-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c2410c;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.warm-section-title {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1c1917;
+  line-height: 1.2;
+  margin: 0 0 14px;
+}
+
+.warm-section-title em {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.warm-section-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #57534e;
+  margin: 0;
+}
+
+/* 3-Column Pillar Cards */
+.warm-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .warm-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.warm-pillar-card {
+  background: #ffffff;
+  border: 1px solid #e7e2d7;
+  border-radius: 14px;
+  padding: 32px 26px;
+  box-shadow: 0 2px 8px rgba(68, 64, 60, 0.03);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.warm-pillar-card:hover {
+  border-color: #d6d0c4;
+  box-shadow: 0 12px 30px rgba(68, 64, 60, 0.08);
+  transform: translateY(-2px);
+}
+
+.warm-pillar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #fef3c7;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.warm-pillar-tag {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #78716c;
+  margin-bottom: 8px;
+}
+
+.warm-pillar-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1c1917;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+
+.warm-pillar-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #57534e;
+  margin: 0;
+}
+
+/* ==========================================================================
+   HOW IT WORKS: 3-STEP FLOW
+   ========================================================================== */
+.warm-steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 860px) {
+  .warm-steps-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.warm-step-card {
+  background: #ffffff;
+  border: 1px solid #e7e2d7;
+  border-radius: 14px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.warm-step-num {
+  font-size: 12px;
+  font-weight: 800;
+  color: #c2410c;
+  background: #ffedd5;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.warm-step-card h4 {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #1c1917;
+  margin: 0 0 10px;
+}
+
+.warm-step-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #57534e;
+  margin: 0;
+}
+
+/* ==========================================================================
+   SOVEREIGN SECURITY & COMPLIANCE
+   ========================================================================== */
+.warm-security-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .warm-security-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.warm-security-box {
+  background: #ffffff;
+  border: 1px solid #e7e2d7;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.warm-sec-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f5f2eb;
+  color: #44403c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.warm-sec-text h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1c1917;
+  margin: 0 0 6px;
+}
+
+.warm-sec-text p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #57534e;
+  margin: 0;
+}
+
+/* ==========================================================================
+   CALL TO ACTION BANNER (DEEP WARM OBSIDIAN)
+   ========================================================================== */
+.warm-cta-section {
+  padding: 80px 0;
+}
+
+.warm-cta-card {
+  background: #1c1917;
+  border-radius: 20px;
+  padding: 60px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  box-shadow: 0 20px 40px rgba(28, 25, 23, 0.15);
+}
+
+.warm-cta-glow {
+  position: absolute;
+  top: -60%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.warm-cta-content {
+  position: relative;
+  z-index: 10;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.warm-cta-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  margin: 0 0 16px;
+}
+
+.warm-cta-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #d6d3d1;
+  margin: 0 0 32px;
+}
+
+.warm-cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-cta-warm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1c1917;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-cta-warm:hover {
+  background: #f5f2eb;
+  transform: translateY(-1px);
+}
+
+.btn-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.15s ease;
+}
+
+.btn-cta-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ==========================================================================
+   MINIMALIST WARM SOVEREIGN FOOTER
+   ========================================================================== */
+.warm-footer {
+  background: #faf8f5;
+  border-top: 1px solid #e7e2d7;
+  padding: 48px 0 32px;
+  font-size: 13px;
+  color: #78716c;
+}
+
+.warm-footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.warm-footer-gov {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.warm-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.warm-footer-links a,
+.warm-footer-links button {
+  color: #57534e;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.warm-footer-links a:hover,
+.warm-footer-links button:hover {
+  color: #c2410c;
+}
+
+.warm-footer-bottom {
+  border-top: 1px solid #e7e2d7;
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #a8a29e;
+}

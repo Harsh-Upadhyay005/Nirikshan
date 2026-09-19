@@ -1,102 +1,90 @@
 /* ==========================================================================
    NIRIKSHAN - AI FOR INFRASTRUCTURE MONITORING (निरीक्षण)
-   Sovereign Government Dashboard Stylesheet
-   Palette: Obsidian, Saffron/Amber, Emerald, Crimson, Ivory (NO BLUE)
+   National Infrastructure Monitoring Command Dashboard
+   Exact Palette: Dark Slate Sidebar (#0c1527), Pristine White Cards (#ffffff),
+   Off-White Workspace (#f1f5f9), Royal Blue Accent (#2563eb)
    ========================================================================== */
 
 :root {
-  --app-bg: #f8fafc;
+  --app-bg: #f1f5f9;
   --panel-bg: #ffffff;
   --panel-border: #e2e8f0;
   --text-main: #0f172a;
   --text-muted: #64748b;
   --text-subtle: #94a3b8;
-  
-  /* Sovereign Colors (Strictly No Blue) */
-  --amber-primary: #f59e0b;
-  --amber-dark: #d97706;
-  --amber-deep: #b45309;
-  --amber-light: #fef3c7;
+  --gov-blue: #2563eb;
+  --gov-blue-dark: #1d4ed8;
+  --gov-blue-light: #dbeafe;
   --emerald-primary: #10b981;
   --emerald-dark: #059669;
   --emerald-light: #d1fae5;
+  --amber-primary: #f59e0b;
+  --amber-light: #fef3c7;
+  --orange-primary: #ea580c;
+  --orange-light: #ffedd5;
   --crimson-primary: #ef4444;
   --crimson-dark: #dc2626;
   --crimson-light: #fee2e2;
-  --purple-primary: #9333ea;
-  --slate-dark: #0f172a;
-  --sidebar-bg: #0b111e;
-  --sidebar-card: #151e2e;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --purple-primary: #8b5cf6;
+  --purple-light: #f3e8ff;
+  --sidebar-bg: #0c1527;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: rgba(255, 255, 255, 0.08);
 
   --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
+  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.07);
   --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.1);
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-lg: 12px;
 }
 
-/* App Layout */
+/* Base App Shell */
 .app-shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background-color: var(--app-bg);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: var(--text-main);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* ==========================================================================
-   ATTRACTIVE SIDEBAR
+   SIDEBAR (DEEP OBSIDIAN & WARM AMBER - NO BLUE)
    ========================================================================== */
 .attractive-sidebar {
-  width: 270px;
-  background: linear-gradient(180deg, #0b111e 0%, #0d1525 50%, #090e18 100%);
+  width: 248px;
+  background: #161618;
   color: #ffffff;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  position: sticky;
-  top: 0;
   height: 100vh;
   z-index: 50;
   border-right: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 
 /* Sidebar Brand Header */
 .sidebar-brand-box {
-  padding: 24px 20px 20px;
+  padding: 20px 18px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   align-items: center;
-  gap: 13px;
-  position: relative;
-}
-
-.sidebar-brand-box::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 20px;
-  right: 20px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent);
+  gap: 12px;
 }
 
 .brand-gem {
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: rgba(217, 119, 6, 0.12);
+  border: 1px solid rgba(217, 119, 6, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f59e0b;
   flex-shrink: 0;
 }
 
@@ -106,160 +94,146 @@
 }
 
 .brand-main-title {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #ffffff;
   line-height: 1.15;
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-}
-
-.brand-devanagari-sub {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: #f59e0b;
 }
 
 .brand-sub-tagline {
-  font-size: 10.5px;
-  color: #94a3b8;
+  font-size: 10px;
+  color: #a8a29e;
   font-weight: 500;
   letter-spacing: 0.01em;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 /* Sidebar Nav Scroll Area */
 .sidebar-menu-list {
   flex: 1;
-  padding: 16px 12px;
+  padding: 14px 10px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
-.sidebar-section-heading {
-  font-size: 10px;
+.sidebar-menu-list::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-menu-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Sidebar Category Section Dividers */
+.sidebar-category-divider {
+  margin: 14px 6px 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.sidebar-category-label {
+  font-size: 9.5px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #64748b;
-  padding: 10px 12px 4px;
+  letter-spacing: 0.08em;
+  color: #78716c;
+  white-space: nowrap;
 }
 
-/* Attractive Nav Button (NO BLUE, Rich Amber Gradient Active) */
+.sidebar-category-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Nav Buttons */
 .side-nav-btn {
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
   padding: 10px 14px;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   border: none;
   background: transparent;
-  color: #cbd5e1;
-  font-size: 13.5px;
-  font-weight: 600;
+  color: #d6d3d1;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s ease;
   text-align: left;
-  position: relative;
 }
 
 .side-nav-btn:hover {
   background: rgba(255, 255, 255, 0.06);
   color: #ffffff;
-  transform: translateX(3px);
 }
 
 .side-nav-btn.active {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, #c2410c 0%, #d97706 100%);
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.35);
 }
 
+.side-nav-btn .side-icon {
+  color: #a8a29e;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.side-nav-btn:hover .side-icon,
 .side-nav-btn.active .side-icon {
   color: #ffffff;
 }
 
-.side-nav-btn .side-icon {
-  color: #94a3b8;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
-}
-
-.side-nav-btn:hover .side-icon {
-  color: #f59e0b;
-}
-
-.side-badge {
-  margin-left: auto;
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 999px;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.side-badge.danger {
-  background: #dc2626;
-  color: #ffffff;
-}
-
-.side-badge.warning {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-}
-
-/* Sidebar Footer: Sovereign Emblem & Credentials */
+/* Sidebar Sovereign Insignia Footer */
 .sidebar-footer-insignia {
-  padding: 18px 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.2);
+  padding: 16px 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .emblem-gold-svg {
   width: 32px;
   height: auto;
-  filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.3));
+  opacity: 0.9;
 }
 
 .emblem-text-block {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .emblem-gov-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: #e2e8f0;
   line-height: 1.25;
 }
 
 .emblem-gov-sub {
-  font-size: 9.5px;
+  font-size: 9px;
   color: #94a3b8;
-  letter-spacing: 0.03em;
 }
 
 .tricolor-strip-bar {
   display: flex;
-  height: 3px;
   width: 80px;
+  height: 3px;
   border-radius: 2px;
   overflow: hidden;
-  margin-top: 4px;
+  margin: 3px 0;
 }
 
 .tricolor-saffron { flex: 1; background: #ff9933; }
@@ -269,13 +243,12 @@
 .developed-india-tag {
   font-size: 9px;
   color: #94a3b8;
-  font-style: italic;
-  font-family: 'IBM Plex Mono', monospace;
-  margin-top: 2px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 /* ==========================================================================
-   MAIN DASHBOARD WORKSPACE
+   MAIN WORKSPACE & TOP BAR
    ========================================================================== */
 .main-workspace {
   flex: 1;
@@ -284,13 +257,23 @@
   min-width: 0;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.main-workspace::-webkit-scrollbar {
+  width: 8px;
+}
+.main-workspace::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 /* Top Command Bar */
 .top-command-bar {
   background: #ffffff;
   border-bottom: 1px solid var(--panel-border);
-  padding: 12px 28px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -298,30 +281,31 @@
   position: sticky;
   top: 0;
   z-index: 40;
+  flex-shrink: 0;
 }
 
 .search-command-box {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
 }
 
 .search-command-box input {
   width: 100%;
   padding: 8px 14px 8px 36px;
-  border-radius: var(--radius-md);
-  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
   background: #f8fafc;
   font-size: 13px;
   color: var(--text-main);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .search-command-box input:focus {
   outline: none;
   background: #ffffff;
-  border-color: var(--amber-primary);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  border-color: var(--gov-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .search-command-icon {
@@ -329,7 +313,7 @@
   left: 11px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 .top-bar-right-cluster {
@@ -343,12 +327,12 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  font-family: 'IBM Plex Mono', monospace;
-  color: var(--text-muted);
+  color: #475569;
   background: #f1f5f9;
-  padding: 6px 11px;
-  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .bell-notify-btn {
@@ -368,7 +352,6 @@
 
 .bell-notify-btn:hover {
   background: #f8fafc;
-  border-color: #cbd5e1;
 }
 
 .bell-counter-badge {
@@ -379,8 +362,8 @@
   color: #ffffff;
   font-size: 10px;
   font-weight: 800;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -391,21 +374,19 @@
 .user-profile-widget {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  gap: 9px;
+  padding: 3px 6px;
+  cursor: pointer;
 }
 
 .user-round-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #0f172a;
-  color: #f59e0b;
+  background: #0c1527;
+  color: #ffffff;
   font-weight: 800;
-  font-size: 12px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -424,7 +405,7 @@
 }
 
 .user-title-dept {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--text-muted);
 }
 
@@ -444,19 +425,28 @@
 }
 
 .from-data-bar {
-  width: 86px;
-  height: 3.5px;
+  width: 90px;
+  height: 3px;
   display: flex;
   border-radius: 2px;
   overflow: hidden;
 }
 
-/* Main Dashboard Canvas Body */
+/* ==========================================================================
+   VIEWPORT & ABOVE-THE-FOLD HERO
+   ========================================================================== */
 .dashboard-viewport {
-  padding: 24px 28px 40px;
+  padding: 20px 24px 36px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+  flex: 1;
+}
+
+.dash-above-fold {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 /* Greeting Header Row */
@@ -471,40 +461,53 @@
 .greeting-titles h1 {
   font-size: 24px;
   font-weight: 800;
-  color: var(--text-main);
+  color: #0f172a;
   letter-spacing: -0.02em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.greeting-titles h1::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gov-blue);
 }
 
 .greeting-titles p {
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .greeting-motto {
   font-style: italic;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 500;
   color: #334155;
   font-family: 'DM Serif Display', Georgia, serif;
 }
 
 /* ==========================================================================
-   TOP 6 STAT KPI CARDS (IN A ROW)
+   KPI SUMMARY CARDS (6 IN A ROW)
    ========================================================================== */
 .stat-cards-strip {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
+  gap: 12px;
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1400px) {
   .stat-cards-strip {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 840px) {
+@media (max-width: 900px) {
   .stat-cards-strip {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -514,13 +517,13 @@
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-md);
-  padding: 16px 18px;
+  padding: 14px 16px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.16s ease, box-shadow 0.16s ease;
-  min-height: 108px;
+  min-height: 102px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .stat-box-card:hover {
@@ -531,12 +534,12 @@
 .stat-card-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .stat-icon-wrap {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -551,12 +554,11 @@
 }
 
 .stat-number-val {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .stat-sub-note {
@@ -565,8 +567,8 @@
   color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 6px;
+  gap: 5px;
+  margin-top: 5px;
 }
 
 .stat-trend-up {
@@ -580,33 +582,41 @@
 }
 
 /* ==========================================================================
-   MAIN DASHBOARD GRID (MAP + DONUT + SECTORS + OVERRUN + TABLES)
+   HERO COMMAND GRID: MAP (LEFT) + 2x2 WIDGETS (RIGHT)
    ========================================================================== */
-.dash-primary-grid {
+.dash-overview-layout {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 20px;
+  grid-template-columns: 1.15fr 1.05fr;
+  gap: 16px;
+  align-items: stretch;
 }
 
 @media (max-width: 1200px) {
-  .dash-primary-grid {
+  .dash-overview-layout {
     grid-template-columns: 1fr;
   }
 }
 
-.dash-secondary-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 20px;
+.dash-overview-left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-@media (max-width: 1200px) {
-  .dash-secondary-grid {
+.dash-overview-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 800px) {
+  .dash-overview-right {
     grid-template-columns: 1fr;
   }
 }
 
-/* Card Widget Containers */
+/* Base Widget Panel */
 .dash-widget-panel {
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
@@ -618,16 +628,16 @@
 }
 
 .widget-header-bar {
-  padding: 14px 20px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--panel-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .widget-header-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--text-main);
   display: flex;
@@ -636,11 +646,14 @@
 }
 
 .widget-view-all-link {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  color: var(--amber-dark);
+  color: var(--gov-blue);
   text-decoration: none;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .widget-view-all-link:hover {
@@ -648,27 +661,28 @@
 }
 
 .widget-dropdown-select {
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--panel-border);
   background: #f8fafc;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
 }
 
 /* ==========================================================================
-   INDIA MAP WIDGET
+   MAP COMPONENT (INDIA GEOJSON)
    ========================================================================== */
 .map-container-card {
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
-  background: #f8fafc;
+  background: #ffffff;
   border-radius: var(--radius-md);
   border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
@@ -676,11 +690,11 @@
   position: fixed;
   inset: 20px;
   z-index: 100;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
 }
 
 .map-top-bar {
-  padding: 14px 20px;
+  padding: 12px 18px;
   background: #ffffff;
   border-bottom: 1px solid var(--panel-border);
   display: flex;
@@ -691,7 +705,7 @@
 }
 
 .map-title-left h3 {
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 800;
   color: var(--text-main);
   margin: 0;
@@ -700,23 +714,23 @@
 .map-controls-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .map-filter-group {
   display: flex;
   background: #f1f5f9;
-  padding: 3px;
-  border-radius: 8px;
+  padding: 2.5px;
+  border-radius: 7px;
   border: 1px solid var(--panel-border);
 }
 
 .map-tab-btn {
-  padding: 4px 12px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 5px;
   border: none;
   background: transparent;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
   cursor: pointer;
@@ -724,17 +738,17 @@
 }
 
 .map-tab-btn.active {
-  background: var(--amber-primary);
+  background: var(--gov-blue);
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.3);
 }
 
 .map-icon-btn {
   background: #ffffff;
   border: 1px solid var(--panel-border);
   border-radius: 6px;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -745,18 +759,18 @@
 .map-canvas-wrap {
   flex: 1;
   position: relative;
-  min-height: 480px;
+  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #eef3f8 0%, #f8fafc 100%);
+  background: linear-gradient(180deg, #edf5fc 0%, #f4f8fb 100%);
 }
 
 .map-zoom-tools {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 14px;
+  left: 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -764,8 +778,8 @@
 }
 
 .zoom-btn {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
@@ -785,37 +799,36 @@
 .india-svg-surface {
   width: 100%;
   height: 100%;
-  max-height: 520px;
+  max-height: 400px;
 }
 
-.india-landmass {
-  fill: #e2e8f0;
-  stroke: #cbd5e1;
-  stroke-width: 2;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
+.india-state-shape {
+  cursor: pointer;
+  transition: fill 0.15s ease, stroke 0.15s ease;
 }
 
-.india-state-border {
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 1.5;
-  stroke-dasharray: 2 3;
+.india-state-shape.hovered {
+  stroke: #1d4ed8 !important;
+  stroke-width: 1.8 !important;
+  filter: brightness(0.96);
 }
 
 .water-label {
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-style: italic;
   fill: #94a3b8;
   font-weight: 600;
   letter-spacing: 0.05em;
+  user-select: none;
 }
 
 .map-state-text {
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 700;
   fill: #334155;
   pointer-events: none;
+  user-select: none;
 }
 
 .map-state-text.hovered {
@@ -824,7 +837,7 @@
 }
 
 .state-bubble {
-  transition: transform 0.15s ease, r 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 .state-pin-group:hover .state-bubble {
@@ -832,132 +845,147 @@
 }
 
 .state-count-text {
-  font-size: 9px;
   font-weight: 800;
   font-family: 'IBM Plex Mono', monospace;
   pointer-events: none;
+  user-select: none;
 }
 
 .map-legend-box {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: #ffffff;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
   border: 1px solid #cbd5e1;
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   z-index: 10;
 }
 
 .legend-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   color: var(--text-main);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 2px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
+  gap: 7px;
+  font-size: 10.5px;
   color: #475569;
   font-weight: 600;
 }
 
 .legend-dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 
 .map-hover-tooltip {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   background: #0f172a;
   color: #ffffff;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
   box-shadow: var(--shadow-md);
-  border-left: 3px solid var(--amber-primary);
+  border-left: 3px solid var(--gov-blue);
   z-index: 20;
 }
 
 .tooltip-sub {
-  font-size: 10px;
+  font-size: 9.5px;
   color: #94a3b8;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 /* ==========================================================================
-   DONUT CHART & SECTOR BARS
+   WIDGETS: DONUT, SECTOR BARS, OVERRUN LINE, TOP 5
    ========================================================================== */
+/* Risk Donut */
 .risk-donut-wrap {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 20px;
-  gap: 16px;
+  padding: 16px 14px;
+  gap: 12px;
+  flex: 1;
 }
 
 .donut-legend-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .donut-legend-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: 12px;
+  gap: 8px;
+  font-size: 11.5px;
   color: var(--text-main);
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.donut-legend-row strong {
+  font-weight: 700;
 }
 
 .donut-color-box {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
-/* Sector Horizontal Bars */
+/* Sector Bars */
 .sector-list-box {
-  padding: 16px 20px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 210px;
 }
 
 .sector-row {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .sector-label-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-main);
 }
 
+.sector-name-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .sector-bar-track {
-  height: 7px;
+  height: 5.5px;
   background: #f1f5f9;
   border-radius: 999px;
   overflow: hidden;
-  position: relative;
 }
 
 .sector-bar-fill {
@@ -966,27 +994,24 @@
   transition: width 0.5s ease-out;
 }
 
-/* ==========================================================================
-   OVERRUN TREND LINE CHART
-   ========================================================================== */
+/* Overrun Trends Line Chart */
 .trend-chart-box {
-  padding: 20px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
+  flex: 1;
 }
 
 .trend-legend-pills {
   display: flex;
   align-items: center;
-  gap: 18px;
-  font-size: 12px;
-  font-weight: 700;
+  gap: 14px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
-/* ==========================================================================
-   TABLES: RECENT ALERTS & HIGH RISK PROJECTS
-   ========================================================================== */
+/* Mini Tables (Top 5 & Alerts) */
 .table-data-wrap {
   width: 100%;
   overflow-x: auto;
@@ -995,14 +1020,14 @@
 .mini-data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12.5px;
+  font-size: 12px;
 }
 
 .mini-data-table th {
   background: #f8fafc;
-  padding: 10px 14px;
+  padding: 8px 12px;
   text-align: left;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1011,7 +1036,7 @@
 }
 
 .mini-data-table td {
-  padding: 11px 14px;
+  padding: 9px 12px;
   border-bottom: 1px solid #f1f5f9;
   color: var(--text-main);
   vertical-align: middle;
@@ -1021,44 +1046,292 @@
   background: #fafbfd;
 }
 
+.risk-score-num {
+  font-weight: 800;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #dc2626;
+}
+
 .alert-type-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
 }
 
-.alert-type-badge.critical {
+.alert-type-badge.critical,
+.alert-type-badge.danger {
   background: var(--crimson-light);
   color: var(--crimson-dark);
 }
 
 .alert-type-badge.warning {
   background: var(--amber-light);
-  color: var(--amber-dark);
+  color: #d97706;
 }
 
 .alert-type-badge.info {
-  background: var(--emerald-light);
-  color: var(--emerald-dark);
-}
-
-.risk-score-num {
-  font-weight: 800;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13.5px;
-  color: #dc2626;
+  background: var(--gov-blue-light);
+  color: var(--gov-blue);
 }
 
 /* ==========================================================================
-   BOTTOM SOVEREIGN BAR
+   SCROLLABLE EXTENDED MODULES (BELOW THE FOLD)
+   ========================================================================== */
+.scroll-divider-banner {
+  margin: 10px 0 6px;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.06) 0%, rgba(241, 245, 249, 0.5) 100%);
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scroll-divider-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-divider-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e3a8a;
+}
+
+.scroll-divider-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.dash-below-fold {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.extended-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.extended-section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.extended-section-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Multi-Filter Bar */
+.filter-matrix-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.filter-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter-input-wrap input {
+  width: 100%;
+  padding: 7px 12px 7px 32px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 12.5px;
+}
+
+.filter-select {
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+/* Full Project Table */
+.full-project-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.full-project-table th {
+  background: #f8fafc;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.full-project-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.full-project-table tr:hover td {
+  background: #f8fafc;
+}
+
+.status-badge-pill {
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-badge-pill.delayed { background: #fee2e2; color: #dc2626; }
+.status-badge-pill.ontrack { background: #d1fae5; color: #059669; }
+.status-badge-pill.critical { background: #fee2e2; color: #991b1b; }
+.status-badge-pill.intervention { background: #ffedd5; color: #ea580c; }
+
+.inspect-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.inspect-btn:hover {
+  background: var(--gov-blue);
+  color: #ffffff;
+  border-color: var(--gov-blue);
+}
+
+/* Grid Cards for Secondary Features */
+.dash-feature-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .dash-feature-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-insight-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-insight-card h3 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-insight-card p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.feature-metric-row {
+  display: flex;
+  gap: 18px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.feature-metric-row div {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-metric-row strong {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.feature-metric-row span {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Operations Report Action Bar */
+.reports-action-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.report-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+
+.report-action-btn:hover {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+/* ==========================================================================
+   SOVEREIGN FOOTER BAR (BOTTOM OF WORKSPACE)
    ========================================================================== */
 .sovereign-bottom-bar {
-  background: #0b111e;
-  color: #ffffff;
-  padding: 12px 28px;
+  background: #0c1527;
+  color: #e2e8f0;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1066,24 +1339,92 @@
   font-size: 11.5px;
   flex-wrap: wrap;
   gap: 12px;
+  margin-top: auto;
 }
 
 .bottom-brand-chain {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: #94a3b8;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-.bottom-brand-chain span {
-  color: #cbd5e1;
+.bottom-brand-chain span.bold-nirikshan {
+  font-weight: 800;
+  color: #38bdf8;
 }
 
 .bottom-gov-sig {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #94a3b8;
+  gap: 9px;
+  color: #cbd5e1;
   font-size: 11px;
+}
+
+/* ==========================================================================
+   PROJECT SLIDEOUT DRAWER
+   ========================================================================== */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer-panel {
+  width: 480px;
+  max-width: 90vw;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.drawer-close-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.drawer-body {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.progress-bar-wrap {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
 }
