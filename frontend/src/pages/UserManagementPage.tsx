@@ -91,7 +91,9 @@ export function UserManagementPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>User Management</h1>
-          <p style={{ fontSize: '12px', color: WARM.muted }}>Manage alert subscriptions and view notification history</p>
+          <p style={{ fontSize: '12px', color: WARM.muted }}>
+            Manage alert subscriptions · Scheduler sends Brevo emails every <strong>15 minutes</strong> when risks are detected
+          </p>
         </div>
         <button onClick={load} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 14px', background: 'linear-gradient(135deg,#f97316,#fb923c)', color: 'white', border: 'none', borderRadius: '7px', fontSize: '12.5px', fontWeight: 700, cursor: 'pointer' }}>
           <RefreshCw size={13} /> Refresh
@@ -218,7 +220,9 @@ export function UserManagementPage() {
             </button>
 
             <p style={{ fontSize: '11px', color: '#94a3b8', marginTop: '10px', lineHeight: 1.5 }}>
-              You will receive email alerts via Brevo when the ML scheduler detects new risks matching your subscription.
+              When the <strong>background ML scheduler</strong> (runs every <strong>15 minutes</strong>) detects a project matching
+              your subscription that crosses the risk threshold, it automatically sends an alert email via{' '}
+              <strong>Brevo</strong> to your registered address.
             </p>
           </div>
         </div>
