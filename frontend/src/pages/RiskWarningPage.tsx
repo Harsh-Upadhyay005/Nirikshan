@@ -97,7 +97,9 @@ export function RiskWarningPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Risk &amp; Early Warning</h1>
-          <p style={{ fontSize: '12px', color: WARM.muted }}>ML-predicted risk alerts across all monitored projects</p>
+          <p style={{ fontSize: '12px', color: WARM.muted }}>
+            ML-predicted risk alerts · LightGBM model trained on MoSPI IPMD Flash Reports · Risk scores from 0–100
+          </p>
         </div>
         <button onClick={load} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 14px', background: 'linear-gradient(135deg,#f97316,#fb923c)', color: 'white', border: 'none', borderRadius: '7px', fontSize: '12.5px', fontWeight: 700, cursor: 'pointer' }}>
           <RefreshCw size={13} /> Refresh
@@ -144,7 +146,7 @@ export function RiskWarningPage() {
           <div style={{ background: 'white', border: `1px solid ${WARM.border}`, borderRadius: '10px', overflow: 'hidden' }}>
             {/* Table header */}
             <div style={{ display: 'grid', gridTemplateColumns: '2.5fr 1.4fr 100px 90px 90px 90px', padding: '9px 14px', background: '#f8fafc', fontSize: '10.5px', fontWeight: 700, color: WARM.muted, textTransform: 'uppercase', letterSpacing: '.4px', borderBottom: `1px solid ${WARM.border}` }}>
-              <span>Project</span><span>Ministry</span><span>Segment</span><span>Risk Score</span><span>Delay Prob.</span><span>Predicted</span>
+              <span>Project</span><span>Ministry</span><span>Risk Tier</span><span>Risk Score (0-100)</span><span>Delay Prob.</span><span>Predicted At</span>
             </div>
 
             {loading ? (
