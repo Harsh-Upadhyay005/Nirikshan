@@ -58,7 +58,7 @@ export function LandingPage() {
 
           <div className="warm-top-status">
             <span className="warm-pulse-dot" />
-            <span>Infrastructure Surveillance Active · 1,981 Central Projects</span>
+            <span>Infrastructure Surveillance Active · 1,600+ Central Projects · ₹22 Lakh Cr Portfolio</span>
           </div>
         </div>
       </div>
@@ -140,9 +140,9 @@ export function LandingPage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="warm-hero-sub"
                 >
-                  Nirikshan provides real-time predictive risk modeling and automated early warnings
-                  across 1,981 central sector infrastructure projects under MoSPI — detecting cost
-                  escalations and schedule slippages before they compound.
+                  Nirikshan continuously analyses monthly Flash Reports across <strong>1,600+ central sector projects
+                  worth ₹22 lakh crore</strong> under MoSPI — predicting cost escalations and schedule slippages
+                  before they compound, with automated alerts every <strong>15 minutes</strong>.
                 </motion.p>
 
                 <motion.div
@@ -311,27 +311,76 @@ export function LandingPage() {
               className="warm-stats-strip"
             >
               <div className="warm-stat-box">
-                <span className="warm-stat-value">1,981</span>
+                <span className="warm-stat-value">1,600+</span>
                 <span className="warm-stat-sub">Central Sector Projects</span>
               </div>
               <div className="warm-stat-box">
-                <span className="warm-stat-value">₹42.78L Cr</span>
-                <span className="warm-stat-sub">Monitored Capital Outlay</span>
+                <span className="warm-stat-value">₹22 Lakh Cr</span>
+                <span className="warm-stat-sub">Infrastructure Portfolio</span>
               </div>
               <div className="warm-stat-box">
-                <span className="warm-stat-value">17</span>
-                <span className="warm-stat-sub">Synchronized Ministries</span>
+                <span className="warm-stat-value">15 min</span>
+                <span className="warm-stat-sub">Automated Alert Cadence</span>
               </div>
               <div className="warm-stat-box">
-                <span className="warm-stat-value">94.2%</span>
-                <span className="warm-stat-sub">ML Early Warning Rate</span>
+                <span className="warm-stat-value">85%+</span>
+                <span className="warm-stat-sub">Delay Prediction Accuracy</span>
               </div>
             </motion.div>
           </div>
         </section>
 
         {/* ==================================================================
-            2. THREE CORE CAPABILITIES (WARM CREAM PALETTE)
+            2. THE PROBLEM vs SOLUTION (KEY DEMO TALKING POINT)
+            ================================================================== */}
+        <section className="warm-section" style={{ background: '#fffbf5' }}>
+          <div className="warm-container">
+            <div className="warm-section-intro">
+              <span className="warm-eyebrow">The Problem We Solve</span>
+              <h2 className="warm-section-title">
+                Officers find out about delays <em>after they happen.</em>
+                <br />We predict them before.
+              </h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', maxWidth: '900px', margin: '0 auto' }}>
+              {/* Before */}
+              <div style={{ background: '#fee2e2', border: '1px solid #fecaca', borderRadius: '14px', padding: '28px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: '#dc2626', marginBottom: '14px' }}>❌ Without Nirikshan</div>
+                {[
+                  'Monthly PDF Flash Reports reviewed manually',
+                  'Cost overruns discovered after crores are spent',
+                  'Delays flagged only at missed milestones',
+                  'No cross-ministry visibility or coordination',
+                  '50-field tables with no anomaly ranking',
+                ].map((t, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '10px', fontSize: '13px', color: '#7f1d1d' }}>
+                    <span style={{ flexShrink: 0, marginTop: '2px' }}>✗</span> {t}
+                  </div>
+                ))}
+              </div>
+
+              {/* After */}
+              <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '14px', padding: '28px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: '#16a34a', marginBottom: '14px' }}>✅ With Nirikshan</div>
+                {[
+                  'ML model predicts delays 6 months in advance',
+                  'Cost overrun probability scored 0–100 per project',
+                  'Automated alerts every 15 minutes via email',
+                  'Role-based dashboard for all 17 ministries',
+                  'Actionable risk rankings, not raw data tables',
+                ].map((t, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '10px', fontSize: '13px', color: '#14532d' }}>
+                    <span style={{ flexShrink: 0, marginTop: '2px' }}>✓</span> {t}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================================
+            3. THREE CORE CAPABILITIES (WARM CREAM PALETTE)
             ================================================================== */}
         <section className="warm-section alt-bg" id="capabilities">
           <div className="warm-container">
@@ -390,7 +439,7 @@ export function LandingPage() {
         </section>
 
         {/* ==================================================================
-            3. HOW IT WORKS (3-STEP STREAMLINED ARCHITECTURE)
+            4. HOW IT WORKS (ARCHITECTURE)
             ================================================================== */}
         <section className="warm-section" id="architecture">
           <div className="warm-container">
@@ -437,7 +486,7 @@ export function LandingPage() {
         </section>
 
         {/* ==================================================================
-            4. SOVEREIGN SECURITY & COMPLIANCE
+            5. SOVEREIGN SECURITY & COMPLIANCE
             ================================================================== */}
         <section className="warm-section alt-bg" id="sovereignty">
           <div className="warm-container">
@@ -487,7 +536,7 @@ export function LandingPage() {
         </section>
 
         {/* ==================================================================
-            5. EXECUTIVE CALL TO ACTION (DEEP WARM OBSIDIAN)
+            6. EXECUTIVE CALL TO ACTION
             ================================================================== */}
         <section className="warm-cta-section">
           <div className="warm-container">
@@ -499,7 +548,8 @@ export function LandingPage() {
                 </h2>
                 <p className="warm-cta-desc">
                   Access live project maps, predictive risk rankings, expenditure variance analysis,
-                  and state-wise infrastructure intelligence across all 1,981 central sector projects.
+                  and state-wise infrastructure intelligence across all 1,600+ central sector projects
+                  worth ₹22 lakh crore.
                 </p>
                 <div className="warm-cta-buttons">
                   <Link to="/dashboard" className="btn-cta-warm">

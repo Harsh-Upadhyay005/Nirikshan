@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, FolderGit2, MapPin, AlertTriangle,
   DollarSign, Clock, BarChart3, FileText, Database,
-  Users, Settings, Activity, Bell, Search
+  Users, Settings, Activity, Bell, Search, LogOut
 } from 'lucide-react'
 
 const NAV_ITEMS = [
@@ -36,6 +36,12 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
   const user = stored ? JSON.parse(stored) : { email: 'admin@mospi.gov.in', role: 'admin' }
   const initials = user.email.slice(0, 2).toUpperCase()
   const roleLabel = user.role === 'admin' ? 'MoSPI Admin' : user.role === 'ministry_officer' ? 'Ministry Officer' : 'Auditor'
+
+  function handleLogout() {
+    localStorage.removeItem('nirikshan_token')
+    localStorage.removeItem('nirikshan_user')
+    navigate('/login')
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#f1f5f9', fontFamily: 'Inter, system-ui, sans-serif', overflow: 'hidden' }}>
@@ -130,7 +136,37 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
               <div style={{ fontSize: '9.5px', opacity: .9, lineHeight: 1.2 }}>{roleLabel}</div>
             </div>
           </div>
+
+          <button
+            onClick={handleLogout}
+            title="Sign out"
+            style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 10px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '7px', cursor: 'pointer', color: '#dc2626', fontSize: '12px', fontWeight: 600, flexShrink: 0 }}
+            onMouseEnter={e => e.currentTarget.style.background = '#fee2e2'}
+            onMouseLeave={e => e.currentTarget.style.background = '#fef2f2'}
+          >
+            <LogOut size={13} /> Sign out
+          </button>
         </header>
+
+        {/* RBAC scope banner — shown for ministry officers */}
+        {user.role === 'ministry_officer' && user.ministry_name && (
+          <div style={{ padding: '8px 20px', background: '#fffbeb', borderBottom: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12.5px', flexShrink: 0 }}>
+            <span style={{ fontSize: '14px' }}>🔒</span>
+            <span style={{ color: '#92400e' }}>
+              <strong>Ministry Officer Scope:</strong> You are viewing projects filtered to{' '}
+              <strong style={{ color: '#c2410c' }}>{user.ministry_name}</strong> only.
+              This is enforced server-side by the API.
+            </span>
+          </div>
+        )}
+        {user.role === 'auditor' && (
+          <div style={{ padding: '8px 20px', background: '#f0fdfa', borderBottom: '1px solid #99f6e4', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12.5px', flexShrink: 0 }}>
+            <span style={{ fontSize: '14px' }}>📋</span>
+            <span style={{ color: '#134e4a' }}>
+              <strong>CAG Auditor Mode:</strong> Read-only access. You can view all project data and risk assessments but cannot issue directives or modify records.
+            </span>
+          </div>
+        )}
 
         {/* Scrollable body */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', minWidth: 0 }}>
