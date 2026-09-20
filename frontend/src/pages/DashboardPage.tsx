@@ -464,9 +464,7 @@ export function DashboardPage() {
 
         {/* Dashboard Viewport */}
         <div className="dashboard-viewport">
-          {/* ================================================================
-              ABOVE-THE-FOLD: EXACT MATCH WITH REFERENCE SCREENSHOT
-              ================================================================ */}
+          
           <div className="dash-above-fold" id="dash-top">
             {/* Welcome Greeting Row */}
             <div className="greeting-header-row">
@@ -1334,35 +1332,9 @@ export function DashboardPage() {
             </section>
           </div>
         </div>
-
-        {/* ================================================================
-            SOVEREIGN BOTTOM BAR (MATCHING FOOTER IN SCREENSHOT)
-            ================================================================ */}
-        <footer className="sovereign-bottom-bar">
-          <div className="bottom-brand-chain">
-            <span className="bold-nirikshan">Nirikshan</span>
-            <span>|</span>
-            <span>Predictive Insights</span>
-            <span>|</span>
-            <span>Proactive Governance</span>
-            <span>|</span>
-            <span>Efficient Infrastructure</span>
-            <span>|</span>
-            <span>Developed India</span>
-          </div>
-
-          <div className="bottom-gov-sig">
-            <svg width="16" height="20" viewBox="0 0 100 130" fill="none">
-              <path d="M50 8C38 8 30 18 30 30C30 42 36 50 44 54C42 58 38 64 34 72C28 84 22 96 22 108C22 116 34 122 50 122C66 122 78 116 78 108C78 96 72 84 66 72C62 64 58 58 56 54C64 50 70 42 70 30C70 18 62 8 50 8Z" fill="#38bdf8" />
-            </svg>
-            <span>Ministry of Statistics and Programme Implementation, Government of India</span>
-          </div>
-        </footer>
+        
       </main>
 
-      {/* ====================================================================
-          PROJECT INSPECTION SLIDEOUT DRAWER
-          ==================================================================== */}
       <AnimatePresence>
         {selectedProject && (
           <div className="drawer-backdrop" onClick={() => setSelectedProject(null)}>
