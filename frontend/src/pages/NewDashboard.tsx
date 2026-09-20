@@ -117,6 +117,15 @@ export function NewDashboard() {
   const [alerts, setAlerts]   = useState(MOCK_ALERTS)
   const [liveData, setLiveData] = useState(false)
 
+  // RBAC-aware greeting
+  const stored = localStorage.getItem('nirikshan_user')
+  const currentUser = stored ? JSON.parse(stored) : { email: 'admin@mospi.gov.in', role: 'admin' }
+  const greetName = currentUser.role === 'admin'
+    ? 'Administrator'
+    : currentUser.role === 'ministry_officer'
+    ? `${currentUser.ministry_name ?? 'Ministry'} Officer`
+    : 'Auditor'
+
   useEffect(() => {
     const token = localStorage.getItem('nirikshan_token')
     if (!token) return
@@ -187,8 +196,15 @@ export function NewDashboard() {
       {/* Welcome row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '14px' }}>
         <div>
-          <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Welcome, Administrator</h1>
-          <p style={{ fontSize: '12px', color: WARM.muted }}>National Infrastructure · Real-time Insights · Proactive Governance</p>
+          <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Welcome, {greetName}</h1>
+          <p style={{ fontSize: '12px', color: WARM.muted }}>
+            National Infrastructure · Real-time ML Insights · Proactive Governance
+            {currentUser.role === 'ministry_officer' && currentUser.ministry_name && (
+              <span style={{ marginLeft: '8px', padding: '2px 8px', background: '#fff7ed', color: '#c2410c', borderRadius: '10px', fontWeight: 700, fontSize: '11px' }}>
+                Scoped: {currentUser.ministry_name}
+              </span>
+            )}
+          </p>
         </div>
         {liveData && (
           <span style={{ fontSize: '11px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', borderRadius: '20px', padding: '3px 10px', fontWeight: 700 }}>
