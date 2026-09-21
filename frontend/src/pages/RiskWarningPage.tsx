@@ -43,7 +43,6 @@ export function RiskWarningPage() {
   const [summary, setSummary]     = useState<Summary | null>(null)
   const [loading, setLoading]     = useState(true)
   const [filter, setFilter]       = useState<string>('All')
-  const [search, setSearch]       = useState('')
   const [selected, setSelected]   = useState<Alert | null>(null)
 
   const token = localStorage.getItem('nirikshan_token') ?? ''
@@ -65,15 +64,8 @@ export function RiskWarningPage() {
   const filtered = useMemo(() => {
     let list = alerts
     if (filter !== 'All') list = list.filter(a => a.risk_segment === filter)
-    if (search.trim()) {
-      const q = search.toLowerCase()
-      list = list.filter(a =>
-        (a.project?.project_name ?? '').toLowerCase().includes(q) ||
-        (a.project?.ministry?.name ?? '').toLowerCase().includes(q)
-      )
-    }
     return list
-  }, [alerts, filter, search])
+  }, [alerts, filter])
 
   const segments = ['All', 'Critical Risk', 'High Risk', 'Medium Risk', 'Low Risk']
 

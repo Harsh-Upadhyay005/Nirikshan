@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -24,8 +24,8 @@ const NAV_ITEMS = [
 // Page-content animation — only the content area fades/slides, never the shell
 const pageVariants = {
   initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
-  exit:    { opacity: 0, y: -6, transition: { duration: 0.15 } },
+  animate: { opacity: 1, y: 0 },
+  exit:    { opacity: 0, y: -6 },
 }
 
 export function DashboardShell() {
@@ -332,6 +332,7 @@ export function DashboardShell() {
             initial="initial"
             animate="animate"
             exit="exit"
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{ flex: 1, overflowY: 'auto', minWidth: 0 }}
           >
             <Outlet />
