@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Bell, Trash2, Plus, RefreshCw, CheckCircle2, BellOff } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', green: '#22c55e', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
 
@@ -80,7 +79,7 @@ export function UserManagementPage() {
   const unreadCount = notifications.filter(n => !n.read_at).length
 
   return (
-    <DashboardLayout>
+    <div style={{ padding: '16px 20px' }}>
       {/* Toast */}
       {toast && (
         <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: '#1e293b', color: 'white', padding: '12px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -267,6 +266,6 @@ export function UserManagementPage() {
           ))}
         </div>
       )}
-    </DashboardLayout>
+    </div>
   )
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { AlertTriangle, TrendingUp, DollarSign, Clock, RefreshCw } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 interface Alert {
   id: number
@@ -79,7 +78,7 @@ export function RiskWarningPage() {
   const segments = ['All', 'Critical Risk', 'High Risk', 'Medium Risk', 'Low Risk']
 
   return (
-    <DashboardLayout searchValue={search} onSearchChange={v => { setSearch(v) }}>
+    <div style={{ padding: '16px 20px' }}>
       {/* Page header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
@@ -204,6 +203,6 @@ export function RiskWarningPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
