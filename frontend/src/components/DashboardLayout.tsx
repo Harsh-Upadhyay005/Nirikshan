@@ -56,7 +56,7 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
   // sidebar variants
   const sidebarVariants = {
     initial: { x: -40, opacity: 0 },
-    animate: { x: 0, opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+    animate: { x: 0, opacity: 1 },
   }
 
   // stagger each nav item
@@ -65,14 +65,14 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
   }
   const navItemVariants = {
     initial: { x: -16, opacity: 0 },
-    animate: { x: 0, opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+    animate: { x: 0, opacity: 1 },
   }
 
   // page content fade-slide
   const pageVariants = {
     initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } },
-    exit:    { opacity: 0, y: -8, transition: { duration: 0.18 } },
+    animate: { opacity: 1, y: 0 },
+    exit:    { opacity: 0, y: -8 },
   }
 
   return (
@@ -83,6 +83,7 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
         variants={sidebarVariants}
         initial="initial"
         animate="animate"
+        transition={{ duration: 0.35, ease: 'easeOut' }}
         style={{ width: '196px', background: 'white', borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', flexShrink: 0, position: 'relative', zIndex: 10 }}
       >
         {/* Brand */}
@@ -119,6 +120,7 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
               <motion.button
                 key={item.id}
                 variants={navItemVariants}
+                transition={{ duration: 0.28, ease: 'easeOut' }}
                 onClick={() => navigate(item.path)}
                 whileHover={!active ? { x: 3, backgroundColor: '#fff7ed' } : {}}
                 whileTap={{ scale: 0.97 }}
@@ -298,6 +300,7 @@ export function DashboardLayout({ children, searchValue = '', onSearchChange }: 
             initial="initial"
             animate="animate"
             exit="exit"
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', minWidth: 0 }}
           >
             {children}

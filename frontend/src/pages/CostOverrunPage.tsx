@@ -34,7 +34,6 @@ export function CostOverrunPage() {
   const [projects, setProjects]   = useState<Project[]>([])
   const [alerts,   setAlerts]     = useState<AlertRow[]>([])
   const [loading,  setLoading]    = useState(true)
-  const [search,   setSearch]     = useState('')
   const [sortByOverrun, setSortByOverrun] = useState(true)
 
   const token   = localStorage.getItem('nirikshan_token') ?? ''
@@ -61,12 +60,8 @@ export function CostOverrunPage() {
       const overrunVal  = a ? Math.round(+(a.expected_overrun_value_cr ?? 0)) : 0
       const origCost    = Math.round(+(p.original_cost_cr ?? 0))
       return { ...p, overrunProb, overrunVal, origCost, segment: a?.risk_segment ?? null }
-    }).filter(p => {
-      if (!search.trim()) return true
-      const q = search.toLowerCase()
-      return p.project_name.toLowerCase().includes(q) || (p.ministry?.name ?? '').toLowerCase().includes(q)
     }).sort((a, b) => sortByOverrun ? b.overrunProb - a.overrunProb : b.origCost - a.origCost)
-  }, [projects, alerts, search, sortByOverrun])
+  }, [projects, alerts, sortByOverrun])
 
   const totalOriginal    = projects.reduce((s, p) => s + +(p.original_cost_cr ?? 0), 0)
   const totalExpOverrun  = alerts.reduce((s, a) => s + +(a.expected_overrun_value_cr ?? 0), 0)
