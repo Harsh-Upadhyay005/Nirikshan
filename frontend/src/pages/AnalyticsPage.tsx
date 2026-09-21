@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { RefreshCw } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', green: '#22c55e', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
 const PALETTE = ['#f97316','#f59e0b','#14b8a6','#fb923c','#f43f5e','#ef4444','#22c55e','#a855f7','#64748b','#0ea5e9']
@@ -87,7 +86,7 @@ export function AnalyticsPage() {
   const maxBucket = Math.max(...delayBuckets, 1)
 
   return (
-    <DashboardLayout>
+    <div style={{ padding: '16px 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Analytics &amp; Insights</h1>
@@ -245,6 +244,6 @@ export function AnalyticsPage() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }

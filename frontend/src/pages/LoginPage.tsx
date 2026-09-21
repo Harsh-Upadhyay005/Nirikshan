@@ -1,49 +1,16 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Activity, ShieldCheck, Zap, Users, Eye, EyeOff } from 'lucide-react'
+import { Activity, Eye, EyeOff } from 'lucide-react'
 import { getGoogleAuthUrl, login, storeSession } from '../api'
-
-const DEMO_CREDS = [
-  {
-    role: 'MoSPI Administrator',
-    desc: 'Full national view — all 1,600+ projects',
-    email: 'admin@mospi.gov.in',
-    password: 'admin@123',
-    icon: ShieldCheck,
-    color: '#f97316',
-    bg: '#fff7ed',
-    border: '#fed7aa',
-  },
-  {
-    role: 'Ministry Officer (Railways)',
-    desc: 'Scoped view — Railways projects only',
-    email: 'railway@ministry.gov.in',
-    password: 'railway@123',
-    icon: Zap,
-    color: '#f59e0b',
-    bg: '#fffbeb',
-    border: '#fde68a',
-  },
-  {
-    role: 'CAG Auditor',
-    desc: 'Read-only audit access across ministries',
-    email: 'auditor@cag.gov.in',
-    password: 'auditor@123',
-    icon: Users,
-    color: '#14b8a6',
-    bg: '#f0fdfa',
-    border: '#99f6e4',
-  },
-]
 
 export function LoginPage() {
   const navigate = useNavigate()
-  const [email, setEmail]       = useState('')
+  const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
-  const [showPw, setShowPw]     = useState(false)
-  const [error, setError]       = useState<string | null>(null)
-  const [success, setSuccess]   = useState<string | null>(null)
-  const [pending, setPending]   = useState(false)
+  const [showPw,   setShowPw]   = useState(false)
+  const [error,    setError]    = useState<string | null>(null)
+  const [success,  setSuccess]  = useState<string | null>(null)
+  const [pending,  setPending]  = useState(false)
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
@@ -68,8 +35,6 @@ export function LoginPage() {
     }
   }
 
-  function fillCred(e: string, p: string) { setEmail(e); setPassword(p) }
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -77,7 +42,7 @@ export function LoginPage() {
       gridTemplateColumns: '1fr 1fr',
       fontFamily: 'Inter, system-ui, sans-serif',
     }}>
-      {/* ── Left panel: branding + demo credentials ── */}
+      {/* ── Left branding panel ── */}
       <div style={{
         background: 'linear-gradient(160deg, #1e293b 0%, #0f172a 100%)',
         padding: '48px 52px',
@@ -87,11 +52,9 @@ export function LoginPage() {
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* background glow */}
         <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: '360px', height: '360px', background: 'radial-gradient(circle, rgba(249,115,22,.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '280px', height: '280px', background: 'radial-gradient(circle, rgba(20,184,166,.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        {/* Brand */}
         <div>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', marginBottom: '40px' }}>
             <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg,#f97316,#fb923c)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -114,71 +77,37 @@ export function LoginPage() {
 
           {/* Security badges */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '36px' }}>
-            {[
-              '🔒 JWT Authentication',
-              '🔑 bcrypt Password Hashing',
-              '⚡ Rate Limited (5/min)',
-              '🛡️ Role-Based Access',
-            ].map(b => (
-              <span key={b} style={{ fontSize: '11px', fontWeight: 600, padding: '4px 10px', background: 'rgba(255,255,255,.07)', border: '1px solid rgba(255,255,255,.12)', borderRadius: '20px', color: '#cbd5e1' }}>{b}</span>
+            {['🔒 JWT Authentication', '🔑 bcrypt Hashing', '⚡ Rate Limited (5/min)', '🛡️ Role-Based Access'].map(b => (
+              <span key={b} style={{ fontSize: '11px', fontWeight: 600, padding: '4px 10px', background: 'rgba(255,255,255,.07)', border: '1px solid rgba(255,255,255,.12)', borderRadius: '20px', color: '#cbd5e1' }}>
+                {b}
+              </span>
             ))}
           </div>
 
-          {/* Demo credentials — always visible */}
-          <div>
-            <div style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: '#64748b', marginBottom: '10px' }}>
-              Demo Credentials (click to fill)
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {DEMO_CREDS.map(c => {
-                const Icon = c.icon
-                return (
-                  <button
-                    key={c.email}
-                    onClick={() => fillCred(c.email, c.password)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '12px',
-                      padding: '12px 14px',
-                      background: 'rgba(255,255,255,.05)',
-                      border: '1px solid rgba(255,255,255,.1)',
-                      borderRadius: '10px', cursor: 'pointer',
-                      textAlign: 'left', transition: 'all .15s',
-                      width: '100%',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(249,115,22,.12)'; e.currentTarget.style.borderColor = 'rgba(249,115,22,.4)' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,.1)' }}
-                  >
-                    <div style={{ width: '32px', height: '32px', background: c.bg, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon size={15} color={c.color} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'white' }}>{c.role}</div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '1px' }}>{c.desc}</div>
-                      <div style={{ fontSize: '10.5px', color: '#64748b', fontFamily: 'monospace', marginTop: '2px' }}>{c.email} · {c.password}</div>
-                    </div>
-                    <div style={{ fontSize: '10px', color: '#64748b', flexShrink: 0 }}>click →</div>
-                  </button>
-                )
-              })}
-            </div>
+          {/* Stats */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            {[
+              { label: 'Projects Monitored', value: '1,600+' },
+              { label: 'Alert Cadence',       value: '15 min' },
+              { label: 'Ministries',          value: '17' },
+              { label: 'Prediction Accuracy', value: '85%+' },
+            ].map(s => (
+              <div key={s.label} style={{ padding: '12px 14px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: '10px' }}>
+                <div style={{ fontSize: '18px', fontWeight: 900, color: '#fb923c' }}>{s.value}</div>
+                <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Footer */}
         <div style={{ fontSize: '11px', color: '#475569', display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px' }}>
           <img src="/emblem-of-india.svg" alt="GoI" style={{ width: '22px', opacity: .5 }} onError={e => { e.currentTarget.style.display = 'none' }} />
           Ministry of Statistics &amp; Programme Implementation · Govt. of India
         </div>
       </div>
 
-      {/* ── Right panel: login form ── */}
-      <div style={{
-        background: '#f8fafc',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '48px 52px',
-      }}>
+      {/* ── Right form panel ── */}
+      <div style={{ background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 52px' }}>
         <div style={{ width: '100%', maxWidth: '400px' }}>
           <div style={{ marginBottom: '32px' }}>
             <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1e293b', marginBottom: '6px', letterSpacing: '-0.5px' }}>Officer Sign In</h1>
@@ -231,8 +160,7 @@ export function LoginPage() {
               padding: '12px', fontSize: '14.5px', fontWeight: 800, color: 'white',
               background: pending ? '#94a3b8' : 'linear-gradient(135deg,#f97316,#fb923c)',
               border: 'none', borderRadius: '9px', cursor: pending ? 'not-allowed' : 'pointer',
-              boxShadow: pending ? 'none' : '0 4px 14px rgba(249,115,22,.35)',
-              transition: 'all .15s', letterSpacing: '.01em',
+              boxShadow: pending ? 'none' : '0 4px 14px rgba(249,115,22,.35)', transition: 'all .15s',
             }}
               onMouseEnter={e => { if (!pending) e.currentTarget.style.transform = 'translateY(-1px)' }}
               onMouseLeave={e => { if (!pending) e.currentTarget.style.transform = 'translateY(0)' }}
