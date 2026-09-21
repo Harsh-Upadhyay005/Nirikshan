@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from sqlalchemy.orm import Session
+
 from pathlib import Path
 from datetime import datetime
 import sys
@@ -87,7 +89,7 @@ async def startup_event():
     # Test database connection
     try:
         with engine.connect() as conn:
-            conn.execute("SELECT 1")
+            conn.execute(text("SELECT 1"))
         logger.info("Database connection successful")
     except Exception as e:
         logger.error(f"Cannot connect to database: {e}")
@@ -123,7 +125,7 @@ def read_root():
 @app.get("/health", response_model=schemas.HealthCheck, tags=["Health"])
 def health_check(db: Session = Depends(get_db)):
     try:
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db_status = "healthy"
     except Exception:
         db_status = "unhealthy"
