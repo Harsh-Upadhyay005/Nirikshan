@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Search, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 interface Project {
   id: number
@@ -90,7 +89,7 @@ export function ProjectPortfolioPage() {
   const totalCost = filtered.reduce((s, p) => s + (+p.original_cost_cr || 0), 0)
 
   return (
-    <DashboardLayout searchValue={search} onSearchChange={v => { setSearch(v); setPage(1) }}>
+    <div style={{ padding: '16px 20px' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
@@ -209,7 +208,7 @@ export function ProjectPortfolioPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
 

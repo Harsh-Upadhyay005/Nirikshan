@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { TrendingUp, DollarSign, AlertTriangle, RefreshCw } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 interface Project {
   id: number
@@ -79,7 +78,7 @@ export function CostOverrunPage() {
   }
 
   return (
-    <DashboardLayout searchValue={search} onSearchChange={setSearch}>
+    <div style={{ padding: '16px 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Cost Overrun Analysis</h1>
@@ -179,6 +178,6 @@ export function CostOverrunPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
