@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { MapPin, TrendingUp, AlertTriangle, Building2 } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 import { StateDistributionMap } from '../components/StateDistributionMap'
 
 interface StatePanelItem {
@@ -48,7 +47,7 @@ export function ProjectExplorerPage() {
   }, [])
 
   return (
-    <DashboardLayout>
+    <div style={{ padding: '16px 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: '#1e293b', marginBottom: '2px' }}>Project Explorer</h1>
@@ -140,6 +139,6 @@ export function ProjectExplorerPage() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { User, Bell, Shield, CheckCircle2, LogOut, Eye, EyeOff } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 import { useNavigate } from 'react-router-dom'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', green: '#22c55e', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
@@ -68,7 +67,7 @@ export function SettingsPage() {
   }
 
   return (
-    <DashboardLayout>
+    <div style={{ padding: '16px 20px' }}>
       {toast && (
         <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: toast.type === 'ok' ? '#1e293b' : WARM.red, color: 'white', padding: '12px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px' }}>
           {toast.type === 'ok' ? <CheckCircle2 size={15} color={WARM.orange} /> : <span>⚠</span>} {toast.msg}
@@ -234,6 +233,6 @@ export function SettingsPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
