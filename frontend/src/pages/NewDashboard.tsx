@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
-  TrendingUp, Building2, Zap, DollarSign, Clock,
-  BarChart3, AlertTriangle, Activity
+  Building2, Zap, DollarSign, Clock,
+  BarChart3, AlertTriangle
 } from 'lucide-react'
 import { DashboardLayout } from '../components/DashboardLayout'
 import { StateDistributionMap } from '../components/StateDistributionMap'

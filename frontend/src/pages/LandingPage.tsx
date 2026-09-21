@@ -16,8 +16,6 @@ import {
   Train,
   Zap,
   Clock,
-  AlertTriangle,
-  FileSpreadsheet
 } from 'lucide-react'
 import '../landing.css'
 
