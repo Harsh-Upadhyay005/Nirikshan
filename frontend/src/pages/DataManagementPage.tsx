@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Database, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', green: '#22c55e', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
 
@@ -88,7 +87,7 @@ export function DataManagementPage() {
   const fieldStyle: React.CSSProperties = { width: '100%', padding: '7px 10px', border: '1px solid #e2e8f0', borderRadius: '7px', fontSize: '12.5px', background: 'white', outline: 'none' }
 
   return (
-    <DashboardLayout>
+    <div style={{ padding: '16px 20px' }}>
       {toast && (
         <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: toast.type==='ok' ? '#1e293b' : '#ef4444', color: 'white', padding: '12px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, zIndex: 1000, display: 'flex', alignItems: 'center', gap: '8px' }}>
           {toast.type==='ok' ? <CheckCircle2 size={15} color={WARM.orange} /> : <AlertTriangle size={15} />} {toast.msg}
@@ -310,6 +309,6 @@ export function DataManagementPage() {
           ))}
         </div>
       )}
-    </DashboardLayout>
+    </div>
   )
 }

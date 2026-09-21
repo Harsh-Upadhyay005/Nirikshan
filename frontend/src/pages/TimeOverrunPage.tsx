@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Clock, TrendingUp, AlertTriangle, RefreshCw, Calendar } from 'lucide-react'
-import { DashboardLayout } from '../components/DashboardLayout'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
 
@@ -72,7 +71,7 @@ export function TimeOverrunPage() {
   const maxBucket = Math.max(...buckets.map(b => b.count), 1)
 
   return (
-    <DashboardLayout searchValue={search} onSearchChange={setSearch}>
+    <div style={{ padding: '16px 20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 900, color: WARM.text, marginBottom: '2px' }}>Time Overrun Analysis</h1>
@@ -198,6 +197,6 @@ export function TimeOverrunPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
