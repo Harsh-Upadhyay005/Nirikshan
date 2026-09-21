@@ -42,24 +42,6 @@ export function LandingPage() {
 
   return (
     <div className="warm-landing" id="top">
-      {/* Top Sovereign Bar */}
-      <div className="warm-top-bar">
-        <div className="warm-container warm-top-bar-inner">
-          <div className="warm-top-left">
-            <span className="warm-flag-strip" aria-label="Indian Tricolor">
-              <span className="saffron" />
-              <span className="white" />
-              <span className="green" />
-            </span>
-            <span>Government of India · Ministry of Statistics and Programme Implementation (MoSPI)</span>
-          </div>
-
-          <div className="warm-top-status">
-            <span className="warm-pulse-dot" />
-            <span>Infrastructure Surveillance Active · 1,600+ Central Projects · ₹22 Lakh Cr Portfolio</span>
-          </div>
-        </div>
-      </div>
 
       {/* Warm Cream Navigation Bar */}
       <header className="warm-navbar">
