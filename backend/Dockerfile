@@ -9,21 +9,21 @@ RUN apt-get update && apt-get install -y \
 # Install uv
 RUN pip install --no-cache-dir uv
 
-# Install Python dependencies first (layer-cached separately from code)
-COPY pyproject.toml README.md ./
+# Install Python dependencies (cached layer — only rebuilds when pyproject.toml changes)
+COPY backend/pyproject.toml backend/README.md ./
 RUN uv pip install --system --no-cache \
     fastapi "uvicorn[standard]" sqlalchemy psycopg2-binary \
     "pydantic>=2.0" pydantic-settings "python-jose[cryptography]" \
-    "passlib[bcrypt]" python-multipart joblib numpy pandas \
+    bcrypt python-multipart joblib numpy pandas \
     scikit-learn lightgbm apscheduler slowapi httpx sib-api-v3-sdk
 
-# Copy backend application code
-COPY src ./src
+# Copy backend application source
+COPY backend/src ./src
 
-# Copy ML source code (ml/src/ml/predict.py + friends)
+# Copy ML Python source (ml/src/ml/predict.py + friends)
 COPY ml/src ./ml/src
 
-# Copy trained model artefacts (the .joblib files)
+# Copy trained model artefacts (.joblib files)
 COPY ml/models ./ml/models
 
 EXPOSE 8000
