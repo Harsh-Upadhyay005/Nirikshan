@@ -20,7 +20,6 @@ import {
   X,
   ExternalLink,
   Send,
-  ShieldCheck,
   ChevronDown,
   Truck,
   Zap,
@@ -30,9 +29,7 @@ import {
   Factory,
   Building2,
   Layers,
-  Filter,
   Download,
-  ArrowUpRight,
   Cpu,
   Eye,
   FileSpreadsheet,
@@ -140,11 +137,6 @@ export function DashboardPage() {
       return matchesSearch && matchesMinistry && matchesRisk && matchesStatus
     })
   }, [projects, globalSearch, explorerMinistry, explorerRisk, explorerStatus])
-
-  // Projects belonging to selected state
-  const stateProjects = useMemo(() => {
-    return projects.filter(p => p.state.toLowerCase().includes(selectedStateName.toLowerCase()))
-  }, [projects, selectedStateName])
 
   // Handle adding an audit note
   const handleAddNote = (e: React.FormEvent) => {

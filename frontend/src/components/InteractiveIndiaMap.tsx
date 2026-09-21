@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useId } from 'react'
+import { useState, useEffect, useId } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Zap, ShieldCheck, Activity, AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { Zap, Activity } from 'lucide-react'
 
 export type MapFilter = 'all' | 'critical' | 'interventions' | 'corridors'
 
