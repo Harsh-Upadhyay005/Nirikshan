@@ -82,8 +82,8 @@ function AnimatedNumber({ target, prefix = '', suffix = '', decimals = 0 }: {
 }
 
 // ── Stat card with hover lift ─────────────────────────────────────────────
-function StatCard({ label, value, rawValue, sub, icon: Icon, iconBg, iconColor, badgeColor, prefix = '', suffix = '' }: {
-  label: string; value: string; rawValue: number; sub: string; icon: any
+function StatCard({ label, rawValue, sub, icon: Icon, iconBg, iconColor, badgeColor, prefix = '', suffix = '' }: {
+  label: string; rawValue: number; sub: string; icon: any
   iconBg: string; iconColor: string; badgeColor?: string
   prefix?: string; suffix?: string
 }) {
@@ -203,7 +203,6 @@ function AnimatedPolyline({ points, color, dashed }: { points: string; color: st
 
 // ─────────────────────────────────────────────────────────────────────────
 export function NewDashboard() {
-  const [search,    setSearch]    = useState('')
   const [stats,     setStats]     = useState(MOCK_STATS)
   const [risk,      setRisk]      = useState(MOCK_RISK)
   const [sectors,   setSectors]   = useState(MOCK_SECTORS)
@@ -288,7 +287,6 @@ export function NewDashboard() {
 
   return (
     <div style={{ padding: '16px 20px' }}>
-
       {/* ── Welcome row ── */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -338,22 +336,22 @@ export function NewDashboard() {
         animate="animate"
         style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '10px', marginBottom: '14px' }}
       >
-        <StatCard label="Total Projects"    value={stats.totalProjects.toLocaleString()} rawValue={stats.totalProjects}
+        <StatCard label="Total Projects"    rawValue={stats.totalProjects}
           sub={`▲ ${stats.totalProjectsGrowth}% · 17 Ministries`}
           icon={Building2} iconBg="#fef3c7" iconColor={WARM.amber} />
-        <StatCard label="Original Cost"     value={`₹${(stats.originalCost/100).toFixed(0)}K Cr`} rawValue={stats.originalCost / 100}
+        <StatCard label="Original Cost"     rawValue={stats.originalCost / 100}
           sub="Sanctioned value" prefix="₹" suffix="K Cr"
           icon={DollarSign} iconBg="#f0fdf4" iconColor="#22c55e" />
-        <StatCard label="Revised Cost"      value={`₹${(stats.revisedCost/100).toFixed(0)}K Cr`} rawValue={stats.revisedCost / 100}
+        <StatCard label="Revised Cost"      rawValue={stats.revisedCost / 100}
           sub={`▲ ${stats.revisedCostGrowth}% escalation`} prefix="₹" suffix="K Cr"
           icon={Zap} iconBg="#fff7ed" iconColor={WARM.orange} />
-        <StatCard label="Cumulative Exp."   value={`₹${(stats.cumulativeExpenditure/100).toFixed(0)}K Cr`} rawValue={stats.cumulativeExpenditure / 100}
+        <StatCard label="Cumulative Exp."   rawValue={stats.cumulativeExpenditure / 100}
           sub={`${stats.expenditurePercent}% of revised`} prefix="₹" suffix="K Cr"
           icon={BarChart3} iconBg="#fdf4ff" iconColor="#a855f7" />
-        <StatCard label="High Risk Projects" value={String(stats.highRiskProjects)} rawValue={stats.highRiskProjects}
+        <StatCard label="High Risk Projects" rawValue={stats.highRiskProjects}
           sub={`▲ ${stats.highRiskGrowth}% increase`}
           icon={AlertTriangle} iconBg="#fee2e2" iconColor={WARM.red} badgeColor={WARM.red} />
-        <StatCard label="Projects Delayed"  value={String(stats.projectsDelayed)} rawValue={stats.projectsDelayed}
+        <StatCard label="Projects Delayed"  rawValue={stats.projectsDelayed}
           sub={`▲ ${stats.delayedGrowth}% increase`}
           icon={Clock} iconBg="#ffedd5" iconColor={WARM.orange} />
       </motion.div>
