@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { AlertTriangle, TrendingUp, DollarSign, Clock, RefreshCw, CheckCircle2, ArrowUpRight } from 'lucide-react'
+import { AlertTriangle, TrendingUp, DollarSign, Clock, RefreshCw } from 'lucide-react'
 import { DashboardLayout } from '../components/DashboardLayout'
 
 interface Alert {
@@ -77,19 +77,6 @@ export function RiskWarningPage() {
   }, [alerts, filter, search])
 
   const segments = ['All', 'Critical Risk', 'High Risk', 'Medium Risk', 'Low Risk']
-
-  function scoreBar(val: string | null) {
-    const n = Math.round(+(val ?? 0) * 100)
-    const color = n >= 75 ? WARM.red : n >= 55 ? WARM.orange : n >= 35 ? WARM.amber : '#22c55e'
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-        <div style={{ flex: 1, height: '5px', background: '#f1f5f9', borderRadius: '3px' }}>
-          <div style={{ width: `${n}%`, height: '100%', background: color, borderRadius: '3px' }} />
-        </div>
-        <span style={{ fontSize: '11px', fontWeight: 700, color, minWidth: '28px' }}>{n}%</span>
-      </div>
-    )
-  }
 
   return (
     <DashboardLayout searchValue={search} onSearchChange={v => { setSearch(v) }}>
@@ -201,7 +188,7 @@ export function RiskWarningPage() {
                 { label: 'Risk Score',             value: `${Math.round(+(selected.risk_score ?? 0) * 100)} / 100`, color: WARM.orange },
                 { label: 'Delay Probability',      value: `${Math.round(+(selected.delay_probability ?? 0) * 100)}%`, color: WARM.amber },
                 { label: 'Cost Overrun Prob.',     value: `${Math.round(+(selected.cost_overrun_probability ?? 0) * 100)}%`, color: WARM.red },
-                { label: 'Expected Slippage',      value: `${+(selected.expected_slippage_months ?? 0).toFixed(1)} months`, color: WARM.orange },
+                { label: 'Expected Slippage',      value: `${Number(selected.expected_slippage_months ?? 0).toFixed(1)} months`, color: WARM.orange },
                 { label: 'Expected Overrun Value', value: `₹${Math.round(+(selected.expected_overrun_value_cr ?? 0)).toLocaleString()} Cr`, color: WARM.red },
               ].map(item => (
                 <div key={item.label} style={{ padding: '10px 12px', background: '#fafafa', borderRadius: '7px' }}>

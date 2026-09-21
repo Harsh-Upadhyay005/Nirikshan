@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, RefreshCw } from 'lucide-react'
+import { Search, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react'
 import { DashboardLayout } from '../components/DashboardLayout'
 
 interface Project {
@@ -13,13 +13,6 @@ interface Project {
   ministry: { id: number; name: string } | null
   category: { id: number; name: string } | null
   agency: { id: number; name: string } | null
-}
-
-const RISK_COLOR: Record<string, string> = {
-  'Critical Risk': '#ef4444',
-  'High Risk':     '#f97316',
-  'Medium Risk':   '#f59e0b',
-  'Low Risk':      '#22c55e',
 }
 
 const TD: React.CSSProperties = { padding: '9px 12px', fontSize: '12.5px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' }
