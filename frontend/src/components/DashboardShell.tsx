@@ -34,6 +34,7 @@ export function DashboardShell() {
   const [time, setTime]           = useState(new Date())
   const [searchVal, setSearchVal] = useState('')
   const [searchFocused, setFocused] = useState(false)
+  const [notificationCount, setNotificationCount] = useState(0)
 
   // Live clock — ticks every second, shell never remounts so this runs once
   useEffect(() => {
@@ -41,9 +42,25 @@ export function DashboardShell() {
     return () => clearInterval(id)
   }, [])
 
+  useEffect(() => {
+    const token = localStorage.getItem('nirikshan_token')
+    if (!token) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    fetch('/api/v1/notifications?unread_only=true&limit=50', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => response.ok ? response.json() : [])
+      .then(notifications => setNotificationCount(Array.isArray(notifications) ? notifications.length : 0))
+      .catch(() => setNotificationCount(0))
+  }, [navigate])
+
   const activeId = NAV_ITEMS.find(n => location.pathname === n.path)?.id ?? 'dashboard'
   const stored   = localStorage.getItem('nirikshan_user')
-  const user     = stored ? JSON.parse(stored) : { email: 'admin@mospi.gov.in', role: 'admin' }
+  const user     = stored ? JSON.parse(stored) : null
+  if (!user) return null
   const initials = user.email.slice(0, 2).toUpperCase()
   const roleLabel = user.role === 'admin'
     ? 'MoSPI Admin'
@@ -242,15 +259,17 @@ export function DashboardShell() {
           <motion.button
             whileHover={{ scale: 1.12 }}
             whileTap={{ scale: 0.9 }}
+            onClick={() => navigate('/users')}
+            aria-label="Open notifications"
             style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', padding: '6px' }}
           >
             <Bell size={18} color="#64748b" />
-            <span style={{
-              position: 'absolute', top: '5px', right: '5px',
-              width: '7px', height: '7px',
-              background: '#ef4444', borderRadius: '50%', border: '1.5px solid white',
-              display: 'block',
-            }} />
+            {notificationCount > 0 && <span style={{
+              position: 'absolute', top: '1px', right: '0px', minWidth: '14px', height: '14px',
+              padding: '0 3px', background: '#ef4444', color: 'white', borderRadius: '8px',
+              border: '1.5px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '8px', fontWeight: 800,
+            }}>{notificationCount > 99 ? '99+' : notificationCount}</span>}
           </motion.button>
 
           {/* User badge */}
