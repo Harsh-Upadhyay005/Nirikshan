@@ -7,7 +7,6 @@ export function TimeOverrunPage() {
   const [projects,   setProjects]   = useState<any[]>([])
   const [alerts,     setAlerts]     = useState<any[]>([])
   const [loading,    setLoading]    = useState(true)
-  const [search,     setSearch]     = useState('')
   const [filterSeg,  setFilterSeg]  = useState('All')
 
   const token   = localStorage.getItem('nirikshan_token') ?? ''
@@ -43,13 +42,9 @@ export function TimeOverrunPage() {
       return { ...p, delayProb, expectedSlip, segment, overdueMonths, targetDoc }
     }).filter(p => {
       if (filterSeg !== 'All' && p.segment !== filterSeg) return false
-      if (search.trim()) {
-        const q = search.toLowerCase()
-        return p.project_name.toLowerCase().includes(q) || (p.ministry?.name ?? '').toLowerCase().includes(q)
-      }
       return true
     }).sort((a, b) => b.delayProb - a.delayProb)
-  }, [projects, alerts, search, filterSeg])
+  }, [projects, alerts, filterSeg])
 
   const overdueCount    = enriched.filter(p => p.overdueMonths > 0).length
   const highDelayCount  = enriched.filter(p => p.delayProb >= 70).length
