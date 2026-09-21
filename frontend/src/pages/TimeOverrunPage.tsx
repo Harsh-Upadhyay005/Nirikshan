@@ -122,7 +122,7 @@ export function TimeOverrunPage() {
         <div style={{ background: 'white', border: `1px solid ${WARM.border}`, borderRadius: '10px', padding: '16px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: WARM.text, marginBottom: '12px' }}>Most Overdue Projects</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {enriched.filter(p => p.overdueMonths > 0).slice(0, 6).map((p, i) => (
+            {enriched.filter(p => p.overdueMonths > 0).slice(0, 6).map((p) => (
               <div key={p.id} style={{ padding: '8px 10px', background: '#fafafa', borderRadius: '6px', borderLeft: `3px solid ${p.overdueMonths > 24 ? WARM.red : p.overdueMonths > 12 ? WARM.orange : WARM.amber}` }}>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: WARM.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.project_name}>{p.project_name}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3px' }}>
