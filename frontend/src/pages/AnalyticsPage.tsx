@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { BarChart3, TrendingUp, RefreshCw, PieChart } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import { DashboardLayout } from '../components/DashboardLayout'
 
 const WARM = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', teal: '#14b8a6', green: '#22c55e', border: '#e2e8f0', text: '#1e293b', muted: '#64748b' }
@@ -59,7 +59,7 @@ export function AnalyticsPage() {
   const riskSegments = useMemo(() => {
     const map: Record<string, number> = {}
     alerts.forEach(a => { const s = a.risk_segment ?? 'Unknown'; map[s] = (map[s] ?? 0) + 1 })
-    return Object.entries(map).map(([name, count], i) => ({
+    return Object.entries(map).map(([name, count]) => ({
       name, count,
       color: name === 'Critical Risk' ? WARM.red : name === 'High Risk' ? WARM.orange : name === 'Medium Risk' ? WARM.amber : WARM.green,
       pct: alerts.length ? Math.round((count / alerts.length) * 100) : 0,
@@ -67,7 +67,6 @@ export function AnalyticsPage() {
   }, [alerts])
 
   const maxCount = Math.max(...grouped.map(g => g.count), 1)
-  const maxCost  = Math.max(...grouped.map(g => g.cost), 1)
 
   // Top 5 by risk
   const topRisk = useMemo(() =>
@@ -138,7 +137,7 @@ export function AnalyticsPage() {
             <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>Loading…</div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '400px', overflowY: 'auto' }}>
-              {grouped.slice(0,20).map((g, i) => (
+              {grouped.slice(0,20).map((g) => (
                 <div key={g.name} style={{ display: 'grid', gridTemplateColumns: '160px 1fr 60px 70px', alignItems: 'center', gap: '10px' }}>
                   <div style={{ fontSize: '11.5px', fontWeight: 600, color: WARM.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={g.name}>{g.name}</div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
