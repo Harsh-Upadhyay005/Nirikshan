@@ -36,8 +36,12 @@ class Settings(BaseSettings):
     
     @property
     def models_dir(self) -> Path:
+        p = Path(self.ml_models_path)
+        if p.is_absolute():
+            return p
+        # relative path — resolve from project root (two levels up from src/)
         base_path = Path(__file__).resolve().parent.parent
-        return (base_path / self.ml_models_path).resolve()
+        return (base_path / p).resolve()
     
     def validate_production_config(self):
         """Validate critical configuration for production deployment."""
