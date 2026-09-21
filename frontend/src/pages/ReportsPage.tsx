@@ -175,7 +175,7 @@ export function ReportsPage() {
         <div style={{ padding: '12px 16px', borderBottom: `1px solid ${WARM.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: '13px', fontWeight: 800, color: WARM.text }}>Ministry-wise Summary</span>
           <button onClick={() => {
-            const rows = minRows.map(([name, d]) => [name, d.count, Math.round(d.cost).toLocaleString(), d.alerts])
+            const rows = minRows.map(([name, d]) => [name, String(d.count), Math.round(d.cost).toLocaleString(), String(d.alerts)])
             downloadCSV('nirikshan_ministry_summary.csv', rows, ['Ministry','Projects','Total Cost (Cr)','Risk Alerts'])
           }} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '5px 10px', background: '#fff7ed', color: WARM.orange, border: '1px solid #fed7aa', borderRadius: '6px', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer' }}>
             <Download size={11} /> Export

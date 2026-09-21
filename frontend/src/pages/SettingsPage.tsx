@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Settings, User, Bell, Shield, CheckCircle2, LogOut, Eye, EyeOff } from 'lucide-react'
+import { User, Bell, Shield, CheckCircle2, LogOut, Eye, EyeOff } from 'lucide-react'
 import { DashboardLayout } from '../components/DashboardLayout'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,8 +9,6 @@ export function SettingsPage() {
   const navigate  = useNavigate()
   const stored    = localStorage.getItem('nirikshan_user')
   const user      = stored ? JSON.parse(stored) : {}
-  const token     = localStorage.getItem('nirikshan_token') ?? ''
-  const headers   = { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }
 
   const [tab,           setTab]           = useState<'profile'|'security'|'notifications'>('profile')
   const [toast,         setToast]         = useState<{ msg: string; type: 'ok'|'err' } | null>(null)
