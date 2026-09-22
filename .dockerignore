@@ -13,7 +13,8 @@ backend/.pytest_cache
 backend/tests
 
 # ML training artefacts — only models are needed, not raw data/notebooks
-ml/data
+ml/data/raw_data
+ml/data/interim
 ml/notebook
 ml/figures
 ml/reports
@@ -25,4 +26,3 @@ ml/src/ingestion
 .gitignore
 **/.cursor
 docs
-*.md

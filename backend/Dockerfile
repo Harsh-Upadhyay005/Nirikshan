@@ -26,6 +26,9 @@ COPY ml/src ./ml/src
 # Copy trained model artefacts (.joblib files)
 COPY ml/models ./ml/models
 
+# Copy processed data for seeding the database
+COPY ml/data/processed ./ml/data/processed
+
 EXPOSE 8000
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
