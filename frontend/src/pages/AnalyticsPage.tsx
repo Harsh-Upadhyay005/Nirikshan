@@ -16,8 +16,8 @@ export function AnalyticsPage() {
   function load() {
     setLoading(true)
     Promise.all([
-      fetch('/api/v1/projects?limit=2000', { headers }).then(r => r.ok ? r.json() : []),
-      fetch('/api/v1/alerts?limit=500',    { headers }).then(r => r.ok ? r.json() : []),
+      fetch('/api/v1/projects?limit=5000', { headers }).then(r => r.ok ? r.json() : []),
+      fetch('/api/v1/alerts?limit=5000',    { headers }).then(r => r.ok ? r.json() : []),
     ]).then(([p, a]) => { setProjects(p); setAlerts(a) }).finally(() => setLoading(false))
   }
 

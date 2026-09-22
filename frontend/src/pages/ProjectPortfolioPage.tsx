@@ -36,7 +36,7 @@ export function ProjectPortfolioPage() {
   function load() {
     setLoading(true)
     Promise.all([
-      fetch('/api/v1/projects?limit=1000', { headers }).then(r => r.ok ? r.json() : []),
+      fetch('/api/v1/projects?limit=5000', { headers }).then(r => r.ok ? r.json() : []),
       fetch('/api/v1/ministries',           { headers }).then(r => r.ok ? r.json() : []),
       fetch('/api/v1/categories',           { headers }).then(r => r.ok ? r.json() : []),
     ]).then(([p, m, c]) => {
