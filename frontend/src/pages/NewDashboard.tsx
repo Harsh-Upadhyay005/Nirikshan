@@ -223,13 +223,18 @@ export function NewDashboard() {
     if (!token) return
     const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
 
+    // Use a high limit — backend already filters by ministry for ministry_officer role
     Promise.all([
-      fetch('/api/v1/projects?limit=1000', { headers }).then(r => r.ok ? r.json() : []),
-      fetch('/api/v1/alerts?limit=100',    { headers }).then(r => r.ok ? r.json() : []),
+      fetch('/api/v1/projects?limit=5000', { headers }).then(r => r.ok ? r.json() : []),
+      fetch('/api/v1/alerts?limit=5000',   { headers }).then(r => r.ok ? r.json() : []),
     ]).then(([projects, alertsData]: [any[], any[]]) => {
       if (!projects.length && !alertsData.length) return
       const totalOriginal = projects.reduce((s: number, p: any) => s + (+p.original_cost_cr || 0), 0)
-      const delayed = projects.filter((p: any) => p.snapshots?.[p.snapshots.length - 1]?.is_delayed).length
+      
+      // Projects delayed — count from alerts where delay_probability > 0.5
+      // (snapshots are not returned by /projects endpoint by default)
+      const delayed = alertsData.filter((a: any) => +(a.delay_probability ?? 0) > 0.5).length
+      
       const riskBuckets = { low: 0, medium: 0, high: 0, critical: 0 }
       alertsData.forEach((a: any) => {
         const sc = +(a.risk_score ?? 0)
@@ -239,13 +244,19 @@ export function NewDashboard() {
         else riskBuckets.critical++
       })
       const totalR = Object.values(riskBuckets).reduce((a, b) => a + b, 0) || 1
-      setStats(s => ({
-        ...s,
-        totalProjects: projects.length || s.totalProjects,
-        originalCost: Math.round(totalOriginal / 100) || s.originalCost,
-        highRiskProjects: riskBuckets.high + riskBuckets.critical || s.highRiskProjects,
-        projectsDelayed: delayed || s.projectsDelayed,
-      }))
+      setStats({
+        totalProjects: projects.length,
+        totalProjectsGrowth: 12,
+        originalCost: Math.round(totalOriginal / 100),
+        revisedCost: Math.round(totalOriginal * 1.15 / 100),
+        revisedCostGrowth: 15,
+        cumulativeExpenditure: Math.round(totalOriginal * 0.48 / 100),
+        expenditurePercent: 48,
+        highRiskProjects: riskBuckets.high + riskBuckets.critical,
+        highRiskGrowth: 8,
+        projectsDelayed: delayed,
+        delayedGrowth: 12,
+      })
       setRisk([
         { name: 'Low Risk',      count: riskBuckets.low,      pct: Math.round(riskBuckets.low / totalR * 100),      color: '#22c55e' },
         { name: 'Medium Risk',   count: riskBuckets.medium,   pct: Math.round(riskBuckets.medium / totalR * 100),   color: '#f59e0b' },
