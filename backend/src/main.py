@@ -4,7 +4,8 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
+from contextlib import asynccontextmanager
 import sys
 import logging
 from logging.handlers import RotatingFileHandler
@@ -19,8 +20,6 @@ from .ml_service import predict_risk
 from .scheduler import start_scheduler
 from .oauth import google_oauth
 from .email_service import email_service
-
-models.Base.metadata.create_all(bind=engine)
 
 # Configure logging
 if settings.env == "production":
@@ -40,10 +39,56 @@ else:
 
 logger = logging.getLogger(__name__)
 
+
+
+# Lifespan context manager (replaces deprecated on_event)
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    # --- Startup ---
+    logger.info("Starting Nirikshan backend...")
+
+    # Validate configuration
+    try:
+        settings.validate_production_config()
+        logger.info("Configuration validation passed")
+    except ValueError as e:
+        logger.error(f"Configuration validation failed: {e}")
+        raise
+
+    # Test database connection
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        logger.info("Database connection successful")
+    except Exception as e:
+        logger.error(f"Cannot connect to database: {e}")
+        raise RuntimeError(f"Database connection failed: {e}")
+
+    # Test ML models
+    try:
+        from .ml_service import predict_risk as _pr
+        logger.info("ML models loaded successfully")
+    except Exception as e:
+        logger.error(f"Failed to load ML models: {e}")
+        raise RuntimeError(f"ML models unavailable: {e}")
+
+    # Start scheduler
+    start_scheduler()
+    logger.info("Background scheduler started")
+
+    yield  # application is running
+
+    # --- Shutdown ---
+    logger.info("Shutting down gracefully...")
+
+
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="Nirikshan API",
     description="Unified Python backend for Nirikshan infrastructure risk monitoring platform",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Rate limiting
@@ -73,44 +118,6 @@ async def log_requests(request: Request, call_next):
         raise
 
 
-# Startup event to validate config and start background scheduler
-@app.on_event("startup")
-async def startup_event():
-    logger.info("Starting Nirikshan backend...")
-    
-    # Validate configuration
-    try:
-        settings.validate_production_config()
-        logger.info("Configuration validation passed")
-    except ValueError as e:
-        logger.error(f"Configuration validation failed: {e}")
-        raise
-    
-    # Test database connection
-    try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-        logger.info("Database connection successful")
-    except Exception as e:
-        logger.error(f"Cannot connect to database: {e}")
-        raise RuntimeError(f"Database connection failed: {e}")
-    
-    # Test ML models
-    try:
-        from .ml_service import predict_risk
-        logger.info("ML models loaded successfully")
-    except Exception as e:
-        logger.error(f"Failed to load ML models: {e}")
-        raise RuntimeError(f"ML models unavailable: {e}")
-    
-    # Start scheduler
-    start_scheduler()
-    logger.info("Background scheduler started")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    logger.info("Shutting down gracefully...")
 
 
 @app.get("/", tags=["Root"])
@@ -477,7 +484,7 @@ def mark_notification_read(
     if not notification:
         raise HTTPException(status_code=404, detail="Notification not found")
     
-    notification.read_at = datetime.utcnow()
+    notification.read_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(notification)
     return notification
@@ -491,7 +498,7 @@ def mark_all_notifications_read(
     count = db.query(models.Notification).filter(
         models.Notification.user_id == current_user.id,
         models.Notification.read_at == None
-    ).update({"read_at": datetime.utcnow()})
+    ).update({"read_at": datetime.now(timezone.utc)})
     db.commit()
     return {"marked_read": count}
 
