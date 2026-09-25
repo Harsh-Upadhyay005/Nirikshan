@@ -71,7 +71,7 @@ def check_and_notify_alerts():
                     message = (
                         f"New high-risk project detected: {alert.project.project_name} "
                         f"({alert.project.ministry.name if alert.project.ministry else 'Unknown'}). "
-                        f"Risk Score: {alert.risk_score:.2f}, Segment: {alert.risk_segment}"
+                        f"Risk Score: {float(alert.risk_score):.2f}, Segment: {alert.risk_segment}"
                     )
                     
                     notification = models.Notification(
