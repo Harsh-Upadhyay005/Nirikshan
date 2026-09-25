@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir uv
 # Install Python dependencies (cached layer — only rebuilds when pyproject.toml changes)
 COPY backend/pyproject.toml backend/README.md ./
 RUN uv pip install --system --no-cache \
-    fastapi "uvicorn[standard]" sqlalchemy psycopg2-binary \
+    fastapi "uvicorn[standard]" sqlalchemy psycopg2-binary "psycopg[binary]" \
     "pydantic>=2.0" pydantic-settings "python-jose[cryptography]" \
     bcrypt python-multipart joblib numpy pandas \
     scikit-learn lightgbm apscheduler slowapi httpx sib-api-v3-sdk
