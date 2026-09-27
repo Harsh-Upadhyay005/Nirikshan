@@ -227,8 +227,6 @@ export function StateDistributionMap({ onSelectState }: Props) {
     return STATE_COUNTS[rawName] ?? 0
   }, [stateData])
 
-  const maxCount = useMemo(() => Math.max(...projected.map(p => getCount(p.rawName)), 1), [projected, getCount])
-
   const handleStateClick = useCallback((rawName: string) => {
     setSelectedName(prev => prev === rawName ? null : rawName)
     const count = getCount(rawName)
@@ -329,8 +327,6 @@ export function StateDistributionMap({ onSelectState }: Props) {
                 const fill = choroplethFill(count, hovered, selected)
                 const stroke = choroplethStroke(count, hovered, selected)
                 const sw = strokeWidth(count, hovered, selected)
-                const useGlow = count > 200 || hovered || selected
-
                 return (
                   <path
                     key={rawName}

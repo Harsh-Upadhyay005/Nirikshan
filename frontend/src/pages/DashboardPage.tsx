@@ -42,8 +42,7 @@ import {
   SECTOR_BREAKDOWN,
   OVERRUN_TRENDS,
   type InfraProject,
-  type AnomalyAlert,
-  type StateDistribution
+  type AnomalyAlert
 } from '../data/mockDashboardData'
 import { StateDistributionMap } from '../components/StateDistributionMap'
 import '../dashboard.css'
@@ -109,7 +108,7 @@ export function DashboardPage() {
   }
 
   // Handle map state selection
-  const handleMapSelectState = (state: StateDistribution) => {
+  const handleMapSelectState = (state: { name: string; count: number }) => {
     setSelectedStateName(state.name)
     showToast(`Inspecting ${state.name} infrastructure (${state.count} projects)`)
     // Optionally scroll down to state breakdown
