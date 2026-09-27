@@ -1,3 +1,64 @@
+# Nirikshan Frontend
+
+React 19 and TypeScript dashboard for the Nirikshan infrastructure project
+risk monitoring platform. It is built with Vite and consumes the FastAPI
+backend for authentication, health checks, lookups, projects, alerts, and
+dashboard data.
+
+## Requirements
+
+- Node.js 20 or newer
+- A running Nirikshan backend, locally or remotely
+
+## Local Development
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Open `http://localhost:5173`.
+
+Set `VITE_API_URL` in `.env` when the backend is not available at the same
+origin:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+## Commands
+
+```bash
+npm run dev       # Start the Vite development server
+npm run build     # Type-check and create a production build in dist/
+npm run lint      # Run ESLint
+npm run preview   # Preview the production build locally
+```
+
+## Deployment
+
+The frontend can be deployed as a static site on Render, Netlify, or Vercel.
+Use `frontend` as the project root, then configure:
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Environment variable: `VITE_API_URL=https://your-backend-url`
+
+Add the deployed frontend URL to the backend's `CORS_ORIGINS` JSON array.
+
+## Structure
+
+```text
+src/
+  api.ts             API client and session helpers
+  App.tsx            Application routes
+  components/        Landing, dashboard, map, and shared UI components
+  pages/             Application pages
+  data/              Local dashboard display data
+public/              Static assets, including India GeoJSON
+```
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

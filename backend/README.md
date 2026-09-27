@@ -238,18 +238,22 @@ JWT_EXPIRY_DAYS=7
 # ML Models
 ML_MODELS_PATH=../ml/models
 
-# CORS
-CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+# CORS - JSON array of allowed origins
+CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
 
-# Email (Optional - for future email notifications)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
+# Brevo email (optional)
+BREVO_API_KEY=your-brevo-api-key
+BREVO_SENDER_EMAIL=noreply@nirikshan.gov.in
+BREVO_SENDER_NAME=Nirikshan Alerts
 
 # Frontend
 FRONTEND_URL=http://localhost:3000
 ```
+
+For Render, set `ML_MODELS_PATH=/app/ml/models`, use the Render PostgreSQL
+internal URL for `DATABASE_URL`, and add the deployed frontend origin to the
+JSON `CORS_ORIGINS` array. The Docker service must use the repository root as
+its build context with `backend/Dockerfile` as the Dockerfile path.
 
 ## Project Structure
 
@@ -368,7 +372,6 @@ For production:
 ## Related Documentation
 
 - [ML Pipeline](../ml/README.md) - Model training
-- [Project Status](../PROJECT_STATUS.md) - Overall status
 - [Quick Start](../QUICKSTART.md) - Get started quickly
 
 ## What Changed?
