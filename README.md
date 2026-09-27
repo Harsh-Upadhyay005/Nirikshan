@@ -319,7 +319,7 @@ Nirikshan/
 │   ├── figures/               # Model evaluation plots
 │   └── schema.sql             # Database schema
 │
-├── frontend/                  # React frontend (future)
+├── frontend/                  # React 19 + TypeScript + Vite dashboard
 │
 ├── .github/workflows/         # CI/CD pipelines
 │   ├── ci.yml                 # Test + lint + security scan
@@ -396,15 +396,26 @@ Nirikshan/
      }'
    ```
 
+6. **Start the frontend** (in a second terminal)
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+   Open `http://localhost:5173`. Set `VITE_API_URL` in `frontend/.env` when
+   the backend is hosted at a different URL.
+
 ### Environment Variables
 
 **Required:**
 ```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/nirikshan
 JWT_SECRET=<64-char-random-string>
-CORS_ORIGINS=["http://localhost:3000"]
-FRONTEND_URL=http://localhost:3000
+CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
+FRONTEND_URL=http://localhost:5173
 ENV=development
+ML_MODELS_PATH=../ml/models
 ```
 
 **Optional (OAuth):**
@@ -456,6 +467,27 @@ pytest tests/test_auth.py::TestPasswordHashing -v
 ```bash
 docker-compose up -d
 ```
+
+### Render
+
+Deploy the backend as a Docker Web Service and create a separate Render
+PostgreSQL database. Use the repository root (`.`) as the Docker build
+context and `backend/Dockerfile` as the Dockerfile path. Set the service
+health check to `/health` and configure:
+
+```bash
+DATABASE_URL=<Render internal PostgreSQL URL>
+JWT_SECRET=<random value with at least 32 characters>
+JWT_ALGORITHM=HS256
+JWT_EXPIRY_DAYS=7
+ML_MODELS_PATH=/app/ml/models
+CORS_ORIGINS=["https://your-frontend.onrender.com"]
+FRONTEND_URL=https://your-frontend.onrender.com
+ENV=production
+```
+
+The Dockerfile includes the backend source, ML source, trained models, and
+processed data. See [DEPLOYMENT.md](DEPLOYMENT.md) for the full checklist.
 
 ### Production
 
@@ -689,7 +721,7 @@ This project is open-source and available under the MIT License.
 ## 🎯 Future Roadmap
 
 ### Short-term (Next 3 months)
-- [ ] React frontend dashboard
+- [x] React frontend dashboard
 - [ ] Mobile app for field officers
 - [ ] Telegram bot for alerts
 - [ ] Advanced data visualizations
